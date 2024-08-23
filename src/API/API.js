@@ -1,5 +1,7 @@
 import axios from "axios";
 import { interceptorsRequest, interceptorsRequestError, interceptorsResponse, interceptorsResponseError } from "./interceptors";
+import { hideLoader, showLoader } from "../store/slice/loaderSlice";
+import { store } from "../store/store";
 
 let API = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
@@ -7,30 +9,27 @@ let API = axios.create({
 });
 
 API.defaults.headers.post["content-type"] = "application/json";
-
 API.defaults.headers.get["Accept"] = "application/json";
 
 API.interceptors.request.use(
     (request) => {
-        const interceptorsReq = interceptorsRequest(request);
-        return interceptorsReq;
+        store.dispatch(showLoader());
+        return interceptorsRequest(request);
     },
-
     (error) => {
-        const promiseError = interceptorsRequestError(error);
-        throw promiseError;
+        store.dispatch(hideLoader());
+        return interceptorsRequestError(error);
     }
 );
 
 API.interceptors.response.use(
     (response) => {
-        const interceptorsRes = interceptorsResponse(response);
-        return interceptorsRes;
+        store.dispatch(hideLoader());
+        return interceptorsResponse(response);
     },
-
     (error) => {
-        const responseError = interceptorsResponseError(error);
-        throw responseError;
+        store.dispatch(hideLoader());
+        return interceptorsResponseError(error);
     }
 );
 

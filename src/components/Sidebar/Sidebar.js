@@ -39,8 +39,8 @@ const Sidebar = () => {
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="/component" className={({ isActive }) => `block py-2 px-4 mt-2 rounded transition-colors ${isActive ? "bg-gray-700" : "hover:bg-gray-600"}`}>
-                            Component
+                        <NavLink to="/inventory" className={({ isActive }) => `block py-2 px-4 mt-2 rounded transition-colors ${isActive ? "bg-gray-700" : "hover:bg-gray-600"}`}>
+                            Inventory
                         </NavLink>
                     </li>
                     <li>

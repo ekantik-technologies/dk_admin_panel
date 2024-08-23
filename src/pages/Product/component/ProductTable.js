@@ -26,6 +26,7 @@ const ProductTable = (props) => {
                         <th className="py-2 px-4 text-left text-gray-600">Color</th>
                         <th className="py-2 px-4 text-left text-gray-600">Sticker</th>
                         <th className="py-2 px-4 text-left text-gray-600">Plastic bag</th>
+                        <th className="py-2 px-4 text-left text-gray-600">Cartoon</th>
                         <th className="py-2 px-4 text-left text-gray-600">Component</th>
                         <th className="py-2 px-4 text-left text-gray-600 w-fit">Action</th>
                     </tr>
@@ -61,7 +62,7 @@ const ProductTable = (props) => {
                                 <td className="py-2 px-4 text-gray-800">
                                     {el.box.map((boxEl, index) => {
                                         return (
-                                            <span key={index} className="px-1.5 py-1 mr-1 rounded-md bg-neutral-200 inline-block">
+                                            <span key={index} className="px-1.5 py-1 m-1 rounded-md bg-neutral-200 inline-block">
                                                 {boxEl.name}
                                             </span>
                                         );
@@ -70,14 +71,23 @@ const ProductTable = (props) => {
                                 <td className="py-2 px-4 text-gray-800">
                                     {el.color.map((colorEl, index) => {
                                         return (
-                                            <span key={index} className="px-1.5 py-1 mr-1 rounded-md bg-neutral-200 inline-block">
+                                            <span key={index} className="px-1.5 py-1 m-1 rounded-md bg-neutral-200 inline-block">
                                                 {colorEl.name}
                                             </span>
                                         );
                                     })}
                                 </td>
-                                <td className="py-2 px-4 text-gray-800">{el.sticker}</td>
-                                <td className="py-2 px-4 text-gray-800">{el.plastic_bag}</td>
+                                <td className="py-2 px-4 text-gray-800">{el.sticker.name + ` - ` + el.sticker_number}</td>
+                                <td className="py-2 px-4 text-gray-800">{el.plastic_bag.name + ` - ` + el.plastic_bag_number}</td>
+                                <td className="py-2 px-4 text-gray-800">
+                                    {el.cartoon.map((cartoonEl, index) => {
+                                        return (
+                                            <span key={index} className="px-1.5 py-1 m-1 rounded-md bg-neutral-200 inline-block">
+                                                {cartoonEl.name}
+                                            </span>
+                                        );
+                                    })}
+                                </td>
                                 <td className="py-2 px-4 text-gray-800">
                                     <div className="flex flex-col">
                                         {el.components.map((comEl, index) => {

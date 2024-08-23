@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import ButtonController from "./component/ButtonController";
-import API from "../../API/API.js";
+import ButtonController from "../../component/ButtonController.js";
 
-import ComponentTable from "./component/ComponentTable";
-import { CREATE_COMPONENT, EDIT_COMPONENT } from "../../constants/modelConstant";
-import ComponentModel from "./model/ComponentModel";
+import ComponentTable from "./component/ComponentTable.js";
+import ComponentModel from "./model/ComponentModel.js";
+import API from "../../../../API/API.js";
+import { CREATE_COMPONENT, EDIT_COMPONENT } from "../../../../constants/modelConstant.js";
 
-export default function Index() {
+export default function Cartoon() {
     const [showPopup, setShowPopup] = useState(null);
 
     const [componentList, setComponentList] = useState([]);
@@ -22,7 +22,7 @@ export default function Index() {
 
     const fetchComponentList = async () => {
         try {
-            const response = await API.get(`/admin/component?page=${currentPage}`);
+            const response = await API.get(`/inventory/cartoon/components?page=${currentPage}`);
             setComponentList(response.components);
             setCurrentPage(currentPage);
             setTotalPages(response.total_pages);
@@ -39,7 +39,13 @@ export default function Index() {
 
     return (
         <>
-            <ButtonController setShowPopup={setShowPopup} selectedComponent={selectedComponent} handleSelectAll={handleSelectAll} fetchComponentList={fetchComponentList} />
+            <ButtonController
+                apiUrl="/inventory/cartoon/components"
+                setShowPopup={setShowPopup}
+                selectedComponent={selectedComponent}
+                handleSelectAll={handleSelectAll}
+                fetchComponentList={fetchComponentList}
+            />
 
             <ComponentTable
                 selectedComponent={selectedComponent}

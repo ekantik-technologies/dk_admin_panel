@@ -4,11 +4,11 @@ import { CREATE_COMPONENT } from "../../../constants/modelConstant";
 import API from "../../../API/API";
 
 export default function ButtonController(props) {
-    const { setShowPopup, selectedComponent, handleSelectAll, fetchComponentList } = props;
+    const { setShowPopup, selectedComponent, handleSelectAll, fetchComponentList, apiUrl } = props;
 
     const handleDelete = async () => {
         try {
-            const response = await API.delete("/admin/component", {
+            const response = await API.delete(apiUrl, {
                 data: { ids: selectedComponent },
             });
 

@@ -14,10 +14,13 @@ export default function ProductModel(props) {
         components: selectedProductDetails.components.map((el) => ({ component: { label: el.id.name, value: el.id._id }, quantity: el.quantity })),
         name: selectedProductDetails.name,
         quantity: selectedProductDetails.quantity,
-        sticker: selectedProductDetails.sticker,
-        plasticBag: selectedProductDetails.plastic_bag,
+        stickerNumber: selectedProductDetails.sticker_number,
+        plasticBagNumber: selectedProductDetails.plastic_bag_number,
+        stickerType: { label: selectedProductDetails.sticker.name, value: { _id: selectedProductDetails.sticker._id, name: selectedProductDetails.sticker.name } },
+        plasticBagType: { label: selectedProductDetails.plastic_bag.name, value: { _id: selectedProductDetails.plastic_bag._id, name: selectedProductDetails.plastic_bag.name } },
         productInBox: selectedProductDetails.in_a_box,
         color: selectedProductDetails.color.map((el) => ({ label: el.name, value: { _id: el._id, name: el.name } })),
+        cartoon: selectedProductDetails.cartoon.map((el) => ({ label: el.name, value: { _id: el._id, name: el.name } })),
         box: selectedProductDetails.box.map((el) => ({ label: el.name, value: { _id: el._id, name: el.name } })),
     });
 
@@ -41,13 +44,16 @@ export default function ProductModel(props) {
     });
 
     const [boxType, setBoxType] = useState([]);
+
     const [colorMenuItem, setColorMenuItem] = useState([]);
+
+    const [cartoonMenuItem, setCartoonMenuItem] = useState([]);
 
     const [componentList, setComponentList] = useState([]);
 
     const fetchComponentList = async () => {
         try {
-            const response = await API.get(`/admin/component?page=${1}`);
+            const response = await API.get(`/inventory/machining/components?page=${1}`);
             setComponentList(response.components.map((el) => ({ label: el.name, value: el._id })));
         } catch (error) {
             console.error("Error fetching users:", error);
@@ -58,18 +64,21 @@ export default function ProductModel(props) {
         try {
             const body = {
                 name: data.name,
-                sticker: data.sticker,
                 color: data.color.map((el) => el.value._id),
                 box: data.box.map((el) => el.value._id),
-                plastic_bag: data.plasticBag,
+                plastic_bag_number: data.plasticBagNumber,
+                plastic_bag: data.plasticBagType.value._id,
                 quantity: data.quantity,
                 in_a_box: data.productInBox,
+                sticker_number: data.stickerNumber,
+                sticker: data.stickerType.value._id,
+                cartoon: data.cartoon.map((el) => el.value._id),
                 components: data.components.map((el) => ({
                     id: el.component.value,
                     quantity: el.quantity,
                 })),
             };
-            const response = await API.put(`/admin/products/${selectedProductDetails._id}`, body);
+            const response = await API.put(`/product/${selectedProductDetails._id}`, body);
 
             if (response?.success) {
                 fetchProductList();
@@ -83,12 +92,15 @@ export default function ProductModel(props) {
     const createProduct = async (data) => {
         const body = {
             name: data.name,
-            sticker: data.sticker,
             color: data.color.map((el) => el.value._id),
             box: data.box.map((el) => el.value._id),
-            plastic_bag: data.plasticBag,
+            plastic_bag_number: data.plasticBagNumber,
+            plastic_bag: data.plasticBagType.value._id,
             quantity: data.quantity,
             in_a_box: data.productInBox,
+            sticker_number: data.stickerNumber,
+            sticker: data.stickerType.value._id,
+            cartoon: data.cartoon.map((el) => el.value._id),
             components: data.components.map((el) => ({
                 id: el.component.value,
                 quantity: el.quantity,
@@ -96,7 +108,7 @@ export default function ProductModel(props) {
         };
 
         try {
-            const response = await API.post("/admin/products", body);
+            const response = await API.post("/product", body);
 
             if (response?.success) {
                 console.log(`response ==>`, response);
@@ -104,8 +116,6 @@ export default function ProductModel(props) {
                 handleClickClose();
             }
         } catch (error) {
-            console.log(`error ==>`, error?.response?.data?.message?.name);
-
             if (error?.response?.data?.message?.name) {
                 setError("name", { message: error?.response?.data?.message?.name });
             }
@@ -113,14 +123,24 @@ export default function ProductModel(props) {
     };
 
     const handleSave = (data) => {
-        console.log(`const data = `, JSON.stringify(data));
         !selectedProductDetails ? createProduct(data) : updateComponent(data);
     };
 
     const fetchBox = async () => {
         try {
-            const response = await API.get("/admin/box");
-            setBoxType(response.box.map((el) => ({ label: el.name, value: el })));
+            const response = await API.get(`/inventory/box/components?page=${1}`);
+            setBoxType(response.components.map((el) => ({ label: el.name, value: el })));
+        } catch (error) {
+            console.log(`error ==>`, error);
+        }
+    };
+
+    const [stickerMenuItem, setStickerMenuItem] = useState([]);
+
+    const fetchSticker = async () => {
+        try {
+            const response = await API.get(`/inventory/sticker/components?page=${1}`);
+            setStickerMenuItem(response.components.map((el) => ({ label: el.name, value: el })));
         } catch (error) {
             console.log(`error ==>`, error);
         }
@@ -135,9 +155,33 @@ export default function ProductModel(props) {
         }
     };
 
+    const [plasticBagMenuItem, setPlasticBagMenuItem] = useState([]);
+
+    const fetchPlasticBag = async () => {
+        try {
+            const response = await API.get(`/inventory/plastic_bag/components?page=${1}`);
+
+            setPlasticBagMenuItem(response.components.map((el) => ({ label: el.name, value: el })));
+        } catch (error) {
+            console.log(`error ==>`, error);
+        }
+    };
+
+    const fetchCartoonList = async () => {
+        try {
+            const response = await API.get(`/inventory/cartoon/components?page=${1}`);
+            setCartoonMenuItem(response.components.map((el) => ({ label: el.name, value: el })));
+        } catch (error) {
+            console.log(`error ==>`, error);
+        }
+    };
+
     useEffect(() => {
         fetchBox();
         fetchColor();
+        fetchSticker();
+        fetchPlasticBag();
+        fetchCartoonList();
         fetchComponentList();
     }, []);
 
@@ -147,6 +191,18 @@ export default function ProductModel(props) {
 
     const handleSelectColor = (selectedColor) => {
         setValue("color", selectedColor);
+    };
+
+    const handleChangeCartoon = (selectedCartoon) => {
+        setValue("cartoon", selectedCartoon);
+    };
+
+    const handleChangePlasticBag = (selectedBag) => {
+        setValue("plasticBagType", selectedBag);
+    };
+
+    const handleChangeSticker = (selectedSticker) => {
+        setValue("stickerType", selectedSticker);
     };
 
     return (
@@ -175,19 +231,52 @@ export default function ProductModel(props) {
                         {errors?.name && <ErrorMessage className="" errors={errors?.name} />}
 
                         <div className="">
-                            <label>Select color</label>
-                            <Select placeholder="Select color" onChange={handleSelectColor} isMulti={true} value={watch("color")} options={colorMenuItem} />
+                            <label>Select Color</label>
+                            <Select
+                                placeholder="Select color"
+                                onChange={handleSelectColor}
+                                isMulti={true}
+                                value={watch("color")}
+                                options={colorMenuItem?.filter((option) => !watch("color")?.some((selected) => selected.label === option.label))}
+                            />
                         </div>
 
                         <div className="">
-                            <span className="mb-0">Select box</span>
-                            <Select placeholder="Select box" onChange={handleSelectBoxType} value={watch("box")} isMulti={true} options={boxType} />
+                            <span className="mb-0">Select Box</span>
+                            <Select
+                                placeholder="Select Box"
+                                onChange={handleSelectBoxType}
+                                value={watch("box")}
+                                isMulti={true}
+                                options={boxType?.filter((option) => !watch("box")?.some((selected) => selected.label === option.label))}
+                            />
+                        </div>
+
+                        <div className="">
+                            <span className="mb-0">Select Cartoon</span>
+                            <Select
+                                placeholder="Select Cartoon"
+                                onChange={handleChangeCartoon}
+                                value={watch("cartoon")}
+                                isMulti={true}
+                                options={cartoonMenuItem?.filter((option) => !watch("cartoon")?.some((selected) => selected.label === option.label))}
+                            />
+                        </div>
+
+                        <div className="">
+                            <span className="mb-0">Select Plastic Bag</span>
+                            <Select placeholder="Select Plastic Bag" onChange={handleChangePlasticBag} value={watch("plasticBagType")} options={plasticBagMenuItem} />
+                        </div>
+
+                        <div className="">
+                            <span className="mb-0">Select Sticker</span>
+                            <Select placeholder="Select Sticker" onChange={handleChangeSticker} value={watch("stickerType")} options={stickerMenuItem} />
                         </div>
 
                         <InputFieldForm
                             type="number"
-                            label="Enter quantity"
-                            placeholder="Enter quantity"
+                            label="Enter Available Quantity"
+                            placeholder="Enter Available Quantity"
                             name="quantity"
                             control={control}
                             rules={{ required: "Please enter quantity" }}
@@ -199,23 +288,23 @@ export default function ProductModel(props) {
                             type="number"
                             label="Enter sticker quantity"
                             placeholder="Enter sticker quantity"
-                            name="sticker"
+                            name="stickerNumber"
                             control={control}
                             rules={{ required: "Please enter sticker quantity" }}
                         />
 
-                        {errors?.sticker && <ErrorMessage className="" errors={errors?.sticker} />}
+                        {errors?.stickerNumber && <ErrorMessage className="" errors={errors?.stickerNumber} />}
 
                         <InputFieldForm
                             type="number"
                             label="Enter plastic bag"
                             placeholder="Enter plastic bag quantity"
-                            name="plasticBag"
+                            name="plasticBagNumber"
                             control={control}
                             rules={{ required: "Please enter plastic bag" }}
                         />
 
-                        {errors?.plasticBag && <ErrorMessage className="" errors={errors?.plasticBag} />}
+                        {errors?.plasticBagNumber && <ErrorMessage className="" errors={errors?.plasticBagNumber} />}
 
                         <InputFieldForm
                             type="number"

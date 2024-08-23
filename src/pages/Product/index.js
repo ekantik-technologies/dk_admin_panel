@@ -22,8 +22,7 @@ export default function Index() {
 
     const fetchProductList = async () => {
         try {
-            const response = await API.get(`/admin/products?page=${currentPage}`);
-            console.log(`const response.products = `, JSON.stringify(response.products));
+            const response = await API.get(`/product?page=${currentPage}`);
             setProductList(response.products);
             setCurrentPage(currentPage);
             setTotalPages(response.total_pages);

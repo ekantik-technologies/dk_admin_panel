@@ -6,77 +6,82 @@ import Login from "./pages/Login";
 import UserSetting from "./pages/UserSetting";
 import Client from "./pages/Client";
 import Configuration from "./pages/Configuration";
-import ComponentInventory from "./pages/ComponentInventory";
+import Inventory from "./pages/Inventory";
 import Product from "./pages/Product";
+import Loader from "./components/Loader/Loader";
 
 function App() {
     return (
-        <Router>
-            <div className="flex">
-                <Sidebar />
+        <>
+            <Loader />
 
-                <div className="flex-1 p-4">
-                    <Routes>
-                        <Route path="/login" element={<Login />} />
+            <Router>
+                <div className="flex">
+                    <Sidebar />
 
-                        <Route
-                            path="/dashboard"
-                            element={
-                                <PrivateRoute>
-                                    <Dashboard />
-                                </PrivateRoute>
-                            }
-                        />
+                    <div className="flex-1 p-4">
+                        <Routes>
+                            <Route path="/login" element={<Login />} />
 
-                        <Route
-                            path="/user-setting"
-                            element={
-                                <PrivateRoute>
-                                    <UserSetting />
-                                </PrivateRoute>
-                            }
-                        />
+                            <Route
+                                path="/dashboard"
+                                element={
+                                    <PrivateRoute>
+                                        <Dashboard />
+                                    </PrivateRoute>
+                                }
+                            />
 
-                        <Route
-                            path="/client"
-                            element={
-                                <PrivateRoute>
-                                    <Client />
-                                </PrivateRoute>
-                            }
-                        />
+                            <Route
+                                path="/user-setting"
+                                element={
+                                    <PrivateRoute>
+                                        <UserSetting />
+                                    </PrivateRoute>
+                                }
+                            />
 
-                        <Route
-                            path="/configuration"
-                            element={
-                                <PrivateRoute>
-                                    <Configuration />
-                                </PrivateRoute>
-                            }
-                        />
+                            <Route
+                                path="/client"
+                                element={
+                                    <PrivateRoute>
+                                        <Client />
+                                    </PrivateRoute>
+                                }
+                            />
 
-                        <Route
-                            path="/component"
-                            element={
-                                <PrivateRoute>
-                                    <ComponentInventory />
-                                </PrivateRoute>
-                            }
-                        />
+                            <Route
+                                path="/configuration"
+                                element={
+                                    <PrivateRoute>
+                                        <Configuration />
+                                    </PrivateRoute>
+                                }
+                            />
 
-                        <Route
-                            path="/product"
-                            element={
-                                <PrivateRoute>
-                                    <Product />
-                                </PrivateRoute>
-                            }
-                        />
-                        <Route path="*" element={<Navigate to="/login" replace />} />
-                    </Routes>
+                            <Route
+                                path="/inventory"
+                                element={
+                                    <PrivateRoute>
+                                        <Inventory />
+                                    </PrivateRoute>
+                                }
+                            />
+
+                            <Route
+                                path="/product"
+                                element={
+                                    <PrivateRoute>
+                                        <Product />
+                                    </PrivateRoute>
+                                }
+                            />
+                            <Route path="*" element={<Navigate to="/login" replace />} />
+                        </Routes>
+                    </div>
                 </div>
-            </div>
-        </Router>
+            </Router>
+        </>
     );
 }
 
