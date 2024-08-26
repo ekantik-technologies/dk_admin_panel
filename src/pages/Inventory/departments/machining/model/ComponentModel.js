@@ -9,6 +9,8 @@ import Button from "../../../../../components/Button/Button";
 export default function ComponentModel(props) {
     const { selectedComponentDetails, fetchComponentList, handleClickClose, department } = props;
 
+    console.log(`department ==>`, department);
+
     const {
         control,
         formState: { errors },
@@ -24,6 +26,7 @@ export default function ComponentModel(props) {
                 name: data.name,
                 minimum_quantity: data.minQuantity,
                 quantity: data.quantity,
+                ...(department === "cartoon" ? { in_a_cartoon: data.in_a_cartoon } : {}),
             };
 
             const response = await API.put(`/inventory/${department}/components/${selectedComponentDetails._id}`, body);
@@ -46,6 +49,7 @@ export default function ComponentModel(props) {
             name: data.name,
             minimum_quantity: data.minQuantity,
             quantity: data.quantity,
+            ...(department === "cartoon" ? { in_a_cartoon: data.in_a_cartoon } : {}),
         };
 
         try {
@@ -75,7 +79,7 @@ export default function ComponentModel(props) {
                 <div className="max-w-[450px] w-full rounded-xl px-8 py-6 md:mt-0 md:w-full md:p-4 lg:max-w-[439px] md:max-w-full md:rounded-none bg-white m-auto">
                     <div className="flex flex-row justify-between items-center border-neutral-300 mb-6 lg:mb-4">
                         <div>
-                            <span className="paragraph-large-medium">Component</span>
+                            <span className="paragraph-large-medium">{department}</span>
                         </div>
 
                         <div onClick={handleClickClose} className="md:hidden cursor-pointer">
@@ -85,24 +89,39 @@ export default function ComponentModel(props) {
 
                     <div className="space-y-6">
                         <InputFieldForm
-                            label="Enter component name"
-                            placeholder="Enter component name"
+                            label={`Enter ${department} name`}
+                            placeholder={`Enter ${department} name`}
                             name="name"
                             control={control}
-                            rules={{ required: "Please enter component name" }}
+                            rules={{ required: `Please enter ${department} name` }}
                         />
 
                         {errors?.name && <ErrorMessage className="" errors={errors?.name} />}
+
+                        {department === "cartoon" && (
+                            <>
+                                <InputFieldForm
+                                    type="number"
+                                    label="Enter Box in Single cartoon"
+                                    placeholder="Enter Box in Single cartoon"
+                                    name="in_a_cartoon"
+                                    control={control}
+                                    rules={{ required: "Please enter box in a cartoon" }}
+                                />
+
+                                {errors?.in_a_cartoon && <ErrorMessage className="" errors={errors?.in_a_cartoon} />}
+                            </>
+                        )}
 
                         {!selectedComponentDetails && (
                             <>
                                 <InputFieldForm
                                     type="number"
-                                    label="Enter component quantity"
-                                    placeholder="Enter component quantity"
+                                    label={`Enter ${department} quantity`}
+                                    placeholder={`Enter ${department} quantity`}
                                     name="quantity"
                                     control={control}
-                                    rules={{ required: "Please enter component quantity" }}
+                                    rules={{ required: `Please enter ${department} quantity` }}
                                 />
 
                                 {errors?.quantity && <ErrorMessage className="" errors={errors?.quantity} />}
@@ -111,11 +130,11 @@ export default function ComponentModel(props) {
 
                         <InputFieldForm
                             type="number"
-                            label="Enter component minimum quantity"
-                            placeholder="Enter component minimum quantity"
+                            label={`Enter ${department} minimum quantity`}
+                            placeholder={`Enter ${department} minimum quantity`}
                             name="minQuantity"
                             control={control}
-                            rules={{ required: "Please enter component minimum quantity" }}
+                            rules={{ required: `Please enter ${department} minimum quantity` }}
                         />
 
                         {errors?.minQuantity && <ErrorMessage className="" errors={errors?.minQuantity} />}

@@ -34,6 +34,7 @@ const ComponentTable = (props) => {
                         <th className="py-2 px-4 text-left text-gray-600">Name</th>
                         <th className="py-2 px-4 text-left text-gray-600">Quantity</th>
                         <th className="py-2 px-4 text-left text-gray-600">Min. Quantity</th>
+                        {department === "cartoon" && <th className="py-2 px-4 text-left text-gray-600">In a Box</th>}
                         <th className="py-2 px-4 text-left text-gray-600 w-fit">Action</th>
                     </tr>
                 </thead>
@@ -66,6 +67,7 @@ const ComponentTable = (props) => {
                                 </td>
                                 <td className="py-2 px-4 text-gray-800">{el.quantity}</td>
                                 <td className="py-2 px-4 text-gray-800">{el.minimum_quantity}</td>
+                                {department === "cartoon" && <td className="py-2 px-4 text-gray-800">{el.in_a_cartoon}</td>}
                                 <td className="py-2 px-4 text-gray-800">
                                     <UpdateQuantity department={department} {...el} fetchComponentList={fetchComponentList} />
                                 </td>

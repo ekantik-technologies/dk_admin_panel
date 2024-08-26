@@ -9,6 +9,8 @@ import Configuration from "./pages/Configuration";
 import Inventory from "./pages/Inventory";
 import Product from "./pages/Product";
 import Loader from "./components/Loader/Loader";
+import OrderStatus from "./pages/OrderStatus";
+import RejectedOrder from "./pages/RejectedOrder/RejectedOrder";
 
 function App() {
     return (
@@ -19,7 +21,7 @@ function App() {
                 <div className="flex">
                     <Sidebar />
 
-                    <div className="flex-1 p-4">
+                    <div className="flex-1 p-4 ml-[208px]">
                         <Routes>
                             <Route path="/login" element={<Login />} />
 
@@ -73,6 +75,24 @@ function App() {
                                 element={
                                     <PrivateRoute>
                                         <Product />
+                                    </PrivateRoute>
+                                }
+                            />
+
+                            <Route
+                                path="/order-status"
+                                element={
+                                    <PrivateRoute>
+                                        <OrderStatus />
+                                    </PrivateRoute>
+                                }
+                            />
+
+                            <Route
+                                path="/rejected-order"
+                                element={
+                                    <PrivateRoute>
+                                        <RejectedOrder />
                                     </PrivateRoute>
                                 }
                             />
