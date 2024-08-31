@@ -21,7 +21,7 @@ function App() {
                 <div className="flex">
                     <Sidebar />
 
-                    <div className="flex-1 p-4 ml-[208px]">
+                    <div className="flex-1 p-4 ml-[256px]">
                         <Routes>
                             <Route path="/login" element={<Login />} />
 
