@@ -15,12 +15,18 @@ const Sidebar = () => {
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="/order-status" className={({ isActive }) => `block py-2 px-4 rounded transition-colors ${isActive ? "bg-gray-700" : "hover:bg-gray-600"}`}>
+                        <NavLink
+                            to="/order-status"
+                            className={({ isActive }) => `block py-2 px-4 mt-2 rounded transition-colors ${isActive ? "bg-gray-700" : "hover:bg-gray-600"}`}
+                        >
                             Orders Status
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink to="/rejected-order" className={({ isActive }) => `block py-2 px-4 rounded transition-colors ${isActive ? "bg-gray-700" : "hover:bg-gray-600"}`}>
+                        <NavLink
+                            to="/rejected-order"
+                            className={({ isActive }) => `block py-2 px-4 mt-2 rounded transition-colors ${isActive ? "bg-gray-700" : "hover:bg-gray-600"}`}
+                        >
                             Rejected Order
                         </NavLink>
                     </li>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Button from "../../components/Button/Button.js";
 import Machining from "./departments/machining/index.js";
+import ProductInventory from "./departments/ProductInventory/ProductInventory.js";
 
 export default function Index() {
     const [activeDepartment, setActiveDepartment] = useState("machining");
@@ -11,6 +12,7 @@ export default function Index() {
         { label: "Plastic Bag", value: "plastic_bag" },
         { label: "Sticker", value: "sticker" },
         { label: "Cartoon", value: "cartoon" },
+        { label: "Product", value: "product" },
     ];
 
     return (
@@ -28,9 +30,7 @@ export default function Index() {
                 ))}
             </div>
 
-            <div className="pt-12 border-neutral-300 border-t">
-                <Machining department={activeDepartment} />
-            </div>
+            <div className="pt-12 border-neutral-300 border-t">{activeDepartment === "product" ? <ProductInventory /> : <Machining department={activeDepartment} />}</div>
         </>
     );
 }
