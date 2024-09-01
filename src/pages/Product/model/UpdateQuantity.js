@@ -3,12 +3,14 @@ import Button from "../../../components/Button/Button";
 import InputField from "../../../components/InputField";
 import API from "../../../API/API";
 import { ReactComponent as CloseIcon } from "../../../Assets/close.svg";
+import { ReactComponent as EditIcon } from "../../../Assets/edit.svg";
+import { ReactComponent as TimerIcon } from "../../../Assets/timer.svg";
+import { ReactComponent as AddIcon } from "../../../Assets/add.svg";
+import { ReactComponent as MinusIcon } from "../../../Assets/minus.svg";
 import { format } from "date-fns";
 
 export default function UpdateQuantity(props) {
-    console.log(`props ==>`, props);
-
-    const { _id, fetchProductList, history } = props;
+    const { _id, fetchProductList, history, onClickEdit } = props;
 
     const [mode, setMode] = useState(null);
 
@@ -37,42 +39,17 @@ export default function UpdateQuantity(props) {
         setMode(null);
     };
 
-    // const ioi = {
-    //     client_id: "_id"("from Client schema"),
-    //     product: [
-    //         {
-    //             id: "product _id"("from Product schema"),
-    //             quantity: "number",
-    //             box: "_id"("from BoxType schema"),
-    //             color: "_id"("from ColorType schema"),
-    //             note: "custom note ",
-    //             has_cartoon: "boolean",
-    //         },
-    //         {
-    //             id: "product _id"("from Product schema"),
-    //             quantity: "number",
-    //             box: "_id"("from BoxType schema"),
-    //             color: "_id"("from ColorType schema"),
-    //             note: "custom note ",
-    //             has_cartoon: "boolean",
-    //         },
-    //     ],
-    //     due_Date: "date and time",
-    //     created_by: "user _id from JWT verification",
-    //     machining: {
-    //         status: { accepted: "boolean", active: "boolean", rejected: "boolean", completed: "boolean" },
-    //         rejection_reason: "long string",
-    //     },
-    //     packaging: { status: { accepted: "boolean", active: "boolean", rejected: "boolean", completed: "boolean" }, rejection_reason: "long string" },
-    //     billing: { status: { accepted: "boolean", active: "boolean", rejected: "boolean", completed: "boolean" }, rejection_reason: "long string" },
-    // };
-
     return (
         <>
-            <div className="flex flex-row items-center gap-4 max-w-[300px]">
-                <Button label="Add" bg="bg-green-300" onClick={() => setMode("add")} />
-                <Button label="Remove" bg="bg-red-300" onClick={() => setMode("remove")} />
-                <Button label="History" bg="bg-orange-300" onClick={() => setMode("history")} />
+            <div className="">
+                <div className="flex flex-row items-center gap-2 max-w-[300px] mt-2">
+                    <span className="cursor-pointer bg-[#5efff2] hover:bg-[#10ada1] rounded-lg font-bold text-3xl p-1" onClick={() => setMode("history")}>
+                        <TimerIcon stroke="#177d74" className="w-5 h-5 hover:stroke-white" />
+                    </span>
+                    <span className="cursor-pointer bg-green-200 hover:bg-green-400 p-1 rounded-lg" onClick={onClickEdit}>
+                        <EditIcon className="w-5 h-5" stroke="#0a730a" />
+                    </span>
+                </div>
             </div>
 
             {!!mode && (

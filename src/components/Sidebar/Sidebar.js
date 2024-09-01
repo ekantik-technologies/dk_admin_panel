@@ -1,69 +1,71 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { motion } from "framer-motion";
+import { ReactComponent as DashboardIcon } from "../../Assets/dashboard.svg";
+import { ReactComponent as RejectedOrderIcon } from "../../Assets/reimbursement.svg";
+import { ReactComponent as UserIcon } from "../../Assets/user.svg";
+import { ReactComponent as ClientIcon } from "../../Assets/group.svg";
+import { ReactComponent as SettingIcon } from "../../Assets/settings.svg";
+import { ReactComponent as POSIcon } from "../../Assets/pos.svg";
+import { ReactComponent as MenuIcon } from "../../Assets/menu.svg";
+import { ReactComponent as ScheduleIcon } from "../../Assets/schedule.svg";
+import dkLogo from "../../Assets/dkLogo.png";
+
+const sidebarVariants = {
+    open: { width: "16rem", transition: { duration: 0.5, ease: "easeInOut" } },
+    closed: { width: "4rem", transition: { duration: 0.5, ease: "easeInOut" } },
+};
+
+const linkVariants = {
+    hover: {
+        backgroundColor: "#4A5568",
+        transition: { duration: 0.3 },
+        paddingLeft: 25,
+    },
+};
 
 const Sidebar = () => {
+    const [isOpen, setIsOpen] = React.useState(true);
+
     return (
-        <div className="fixed top-0 left-0 w-64 bg-gray-800 text-white h-screen flex flex-col">
-            <div className="p-4 text-center text-2xl font-bold border-b border-gray-700">
-                <span className="">DK Product</span>
+        <motion.div
+            className="fixed top-0 left-0 h-screen bg-gradient-to-b from-[#3f484f] to-[#2d343b] text-white flex flex-col items-center py-4"
+            animate={isOpen ? "open" : "closed"}
+            variants={sidebarVariants}
+            initial={false}
+        >
+            <div className="text-center text-xl font-bold mb-6 cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
+                <motion.img src={dkLogo} className="w-48 h-auto mx-auto" whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }} />
             </div>
-            <nav className="flex-1 p-4 overflow-y-auto">
-                <ul>
-                    <li>
-                        <NavLink to="/dashboard" className={({ isActive }) => `block py-2 px-4 rounded transition-colors ${isActive ? "bg-gray-700" : "hover:bg-gray-600"}`}>
-                            Dashboard
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink
-                            to="/order-status"
-                            className={({ isActive }) => `block py-2 px-4 mt-2 rounded transition-colors ${isActive ? "bg-gray-700" : "hover:bg-gray-600"}`}
-                        >
-                            Orders Status
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink
-                            to="/rejected-order"
-                            className={({ isActive }) => `block py-2 px-4 mt-2 rounded transition-colors ${isActive ? "bg-gray-700" : "hover:bg-gray-600"}`}
-                        >
-                            Rejected Order
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink
-                            to="/user-setting"
-                            className={({ isActive }) => `block py-2 px-4 mt-2 rounded transition-colors ${isActive ? "bg-gray-700" : "hover:bg-gray-600"}`}
-                        >
-                            User Setting
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/client" className={({ isActive }) => `block py-2 px-4 mt-2 rounded transition-colors ${isActive ? "bg-gray-700" : "hover:bg-gray-600"}`}>
-                            Client
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink
-                            to="/configuration"
-                            className={({ isActive }) => `block py-2 px-4 mt-2 rounded transition-colors ${isActive ? "bg-gray-700" : "hover:bg-gray-600"}`}
-                        >
-                            Configuration
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/inventory" className={({ isActive }) => `block py-2 px-4 mt-2 rounded transition-colors ${isActive ? "bg-gray-700" : "hover:bg-gray-600"}`}>
-                            Inventory
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink to="/product" className={({ isActive }) => `block py-2 px-4 mt-2 rounded transition-colors ${isActive ? "bg-gray-700" : "hover:bg-gray-600"}`}>
-                            Product
-                        </NavLink>
-                    </li>
+            <nav className="flex-1 w-full">
+                <ul className="space-y-2 pl-2">
+                    {[
+                        { to: "/dashboard", icon: DashboardIcon, label: "Dashboard" },
+                        { to: "/order-status", icon: ScheduleIcon, label: "Orders Status" },
+                        { to: "/rejected-order", icon: RejectedOrderIcon, label: "Rejected Order" },
+                        { to: "/user-setting", icon: UserIcon, label: "User Setting" },
+                        { to: "/client", icon: ClientIcon, label: "Client" },
+                        { to: "/configuration", icon: SettingIcon, label: "Configuration" },
+                        { to: "/inventory", icon: POSIcon, label: "Inventory" },
+                        { to: "/product", icon: MenuIcon, label: "Product" },
+                    ].map((item) => (
+                        <motion.li key={item.to} variants={linkVariants} whileHover="hover" className="group flex items-center">
+                            <NavLink
+                                to={item.to}
+                                className={({ isActive }) =>
+                                    `flex items-center py-2 px-2 w-full rounded transition-all duration-300 ${isActive ? "bg-neutral-500" : "hover:bg-gray-600"}`
+                                }
+                            >
+                                <item.icon className="stroke-white h-5 w-5" />
+                                <motion.span className="ml-4" animate={{ opacity: isOpen ? 1 : 0, x: isOpen ? 0 : -20 }} transition={{ duration: 0.3 }}>
+                                    {item.label}
+                                </motion.span>
+                            </NavLink>
+                        </motion.li>
+                    ))}
                 </ul>
             </nav>
-        </div>
+        </motion.div>
     );
 };
 

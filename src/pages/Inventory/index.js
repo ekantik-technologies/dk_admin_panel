@@ -23,14 +23,14 @@ export default function Index() {
                         key={dept.value}
                         label={dept.label}
                         onClick={() => setActiveDepartment(dept.value)}
-                        bg={`transition-colors duration-300 ${
-                            activeDepartment === dept.value ? "bg-neutral-300" : "bg-neutral-100 border-neutral-300 border text-black hover:border-0 hover:bg-neutral-200"
-                        }`}
+                        // bg={`transition-colors duration-300 ${
+                        //     activeDepartment === dept.value ? "bg-neutral-300" : "bg-neutral-100 border-neutral-300 border text-black hover:border-0 hover:bg-neutral-200"
+                        // }`}
                     />
                 ))}
             </div>
 
-            <div className="pt-12 border-neutral-300 border-t">{activeDepartment === "product" ? <ProductInventory /> : <Machining department={activeDepartment} />}</div>
+            <div className="pt-6 border-neutral-300 border-t">{activeDepartment === "product" ? <ProductInventory /> : <Machining department={activeDepartment} />}</div>
         </>
     );
 }

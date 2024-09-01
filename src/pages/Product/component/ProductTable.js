@@ -1,144 +1,158 @@
 import React from "react";
 import { CheckBox } from "../../../components/CheckBox/CheckBox.js";
-import { ReactComponent as EditIcon } from "../../../Assets/edit.svg";
 import { EDIT_PRODUCT } from "../../../constants/modelConstant.js";
 import UpdateQuantity from "../model/UpdateQuantity.js";
+import { motion } from "framer-motion";
 
 const ProductTable = (props) => {
-    const { selectedProduct, setSelectedProduct, currentPage, totalPages, productList, setCurrentPage, setShowPopup, setSelectedProductDetails, fetchProductList } = props;
+    const { selectedProduct, setSelectedProduct, currentPage, productList, totalPages, setCurrentPage, setShowPopup, setSelectedProductDetails, fetchProductList } = props;
 
     const handleSelection = (_, id) => {
-        selectedProduct.includes(id)
-            ? setSelectedProduct((prevState) => {
-                  return prevState.filter((el) => el !== id);
-              })
-            : setSelectedProduct((prevState) => [...prevState, id]);
+        selectedProduct.includes(id) ? setSelectedProduct((prevState) => prevState.filter((el) => el !== id)) : setSelectedProduct((prevState) => [...prevState, id]);
+    };
+
+    const handleSelectAll = () => {
+        if (selectedProduct.length === productList?.length) {
+            setSelectedProduct([]);
+        } else {
+            setSelectedProduct(productList.map((el) => el._id));
+        }
     };
 
     return (
-        <div className="p-4">
-            <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+        <div className="">
+            <motion.table
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="min-w-full bg-[#3f484f] border border-gray-300 rounded-lg shadow-lg overflow-hidden"
+            >
                 <thead>
-                    <tr className="bg-gray-100 border-b">
-                        <th className="py-2 px-4 text-left text-gray-600">Name</th>
-                        <th className="py-2 px-4 text-left text-gray-600">Quantity</th>
-                        <th className="py-2 px-4 text-left text-gray-600">Box</th>
-                        <th className="py-2 px-4 text-left text-gray-600">Color</th>
-                        <th className="py-2 px-4 text-left text-gray-600">Sticker</th>
-                        <th className="py-2 px-4 text-left text-gray-600">Plastic bag</th>
-                        <th className="py-2 px-4 text-left text-gray-600">Cartoon</th>
-                        <th className="py-2 px-4 text-left text-gray-600">Component</th>
-                        <th className="py-2 px-4 text-left text-gray-600 w-fit">Action</th>
+                    <tr className="bg-gradient-to-r from-[#3f484f] to-[#5b636b] text-white">
+                        <th className="py-2 px-3 w-[2%] text-left font-semibold uppercase tracking-wide text-[12px]">
+                            <CheckBox setIsChecked={() => handleSelectAll()} paddingL="pl-3" isChecked={selectedProduct.length === productList?.length} />
+                        </th>
+                        <th className="py-2 px-3 w-[7%] text-left font-semibold uppercase tracking-wide text-[12px]">Name</th>
+                        <th className="py-2 px-3 w-[10%] text-left font-semibold uppercase tracking-wide text-[12px]">Box</th>
+                        <th className="py-2 px-3 w-[10%] text-left font-semibold uppercase tracking-wide text-[12px]">Color</th>
+                        <th className="py-2 px-3 w-[7%] text-left font-semibold uppercase tracking-wide text-[12px]">Sticker</th>
+                        <th className="py-2 px-3 w-[7%] text-left font-semibold uppercase tracking-wide text-[12px]">Plastic Bag</th>
+                        <th className="py-2 px-3 w-[15%] text-left font-semibold uppercase tracking-wide text-[12px]">Cartoon</th>
+                        <th className="py-2 px-3 w-[15%] text-left font-semibold uppercase tracking-wide text-[12px]">Component</th>
+                        <th className="py-2 px-3 w-[5%] text-left font-semibold uppercase tracking-wide text-[12px]">Action</th>
                     </tr>
                 </thead>
 
-                <tbody>
+                <motion.tbody
+                    initial="hidden"
+                    animate="visible"
+                    variants={{
+                        hidden: { opacity: 0, y: 20 },
+                        visible: { opacity: 1, y: 0, transition: { staggerChildren: 0.1 } },
+                    }}
+                >
                     {productList?.length > 0 ? (
                         productList.map((el, index) => (
-                            <tr key={index} className="border-b hover:bg-gray-50">
-                                <td className="py-2 px-4 text-gray-800">
-                                    <div className="flex flex-row items-center gap-2">
+                            <motion.tr
+                                key={index}
+                                variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+                                className={`${index % 2 === 0 ? "bg-[#fff9f5]" : "bg-[#fff2eb]"}`}
+                            >
+                                <td className="py-3 px-3 text-[12px]">
+                                    <CheckBox setIsChecked={(isChecked) => handleSelection(isChecked, el._id)} paddingL="pl-3" isChecked={selectedProduct.includes(el._id)} />
+                                </td>
+                                <td className="py-3 px-3 text-gray-800 font-medium text-[12px]">{el.name}</td>
+                                <td className="py-3 px-2 text-gray-800 font-medium text-[12px]">
+                                    {el.box.map((boxEl, index) => (
                                         <span
-                                            className="cursor-pointer"
-                                            onClick={() => {
-                                                setShowPopup(EDIT_PRODUCT);
-
-                                                setSelectedProductDetails(el);
-                                            }}
+                                            key={index}
+                                            className="px-2 py-1 m-1 rounded-md bg-[#edeff0] text-[#3f484f] border border-neutral-400 font-semibold inline-block text-[12px]"
                                         >
-                                            <EditIcon />
+                                            {boxEl.name}
                                         </span>
-
-                                        <CheckBox
-                                            setIsChecked={(isChecked) => handleSelection(isChecked, el._id)}
-                                            label={el.name}
-                                            paddingL="pl-3"
-                                            optionId={el.name}
-                                            isChecked={selectedProduct.includes(el._id)}
-                                        />
+                                    ))}
+                                </td>
+                                <td className="py-3 px-2 text-gray-800 font-medium text-[12px]">
+                                    {el.color.map((colorEl, index) => (
+                                        <span
+                                            key={index}
+                                            className="px-2 py-1 m-1 rounded-md border border-green-400 bg-green-100 text-green-900 font-semibold inline-block text-[12px]"
+                                        >
+                                            {colorEl.name}
+                                        </span>
+                                    ))}
+                                </td>
+                                <td className="py-3 px-3 text-gray-800 font-medium text-[12px]">
+                                    {el.sticker.name} ({el.sticker_number})
+                                </td>
+                                <td className="py-3 px-3 text-gray-800 font-medium text-[12px]">
+                                    {el.plastic_bag.name} ({el.plastic_bag_number})
+                                </td>
+                                <td className="py-3 px-2 text-gray-800 font-medium text-[12px]">
+                                    {el.cartoon.map((cartoonEl, index) => (
+                                        <span
+                                            key={index}
+                                            className="px-2 py-1 m-1 rounded-md border border-yellow-400 bg-yellow-100 text-yellow-900 font-semibold inline-block text-[12px]"
+                                        >
+                                            {cartoonEl.name}
+                                        </span>
+                                    ))}
+                                </td>
+                                <td className="py-3 px-2 text-gray-800 font-medium text-[12px]">
+                                    <div className="">
+                                        {el.components.map((comEl, index) => (
+                                            <div key={index} className="px-2 m-1 w-fit inline-block py-1 border border-gray-300 rounded-md bg-gray-100 text-[12px]">
+                                                <span>
+                                                    {comEl.id.name} ({comEl.quantity})
+                                                </span>
+                                            </div>
+                                        ))}
                                     </div>
                                 </td>
-                                <td className="py-2 px-4 text-gray-800">{el.quantity}</td>
-                                <td className="py-2 px-4 text-gray-800">
-                                    {el.box.map((boxEl, index) => {
-                                        return (
-                                            <span key={index} className="px-1.5 py-1 m-1 rounded-md bg-neutral-200 inline-block">
-                                                {boxEl.name}
-                                            </span>
-                                        );
-                                    })}
+                                <td className="py-3 px-2 text-gray-800 text-[12px]">
+                                    <UpdateQuantity
+                                        {...el}
+                                        onClickEdit={() => {
+                                            setShowPopup(EDIT_PRODUCT);
+                                            setSelectedProductDetails(el);
+                                        }}
+                                        fetchProductList={fetchProductList}
+                                    />
                                 </td>
-                                <td className="py-2 px-4 text-gray-800">
-                                    {el.color.map((colorEl, index) => {
-                                        return (
-                                            <span key={index} className="px-1.5 py-1 m-1 rounded-md bg-neutral-200 inline-block">
-                                                {colorEl.name}
-                                            </span>
-                                        );
-                                    })}
-                                </td>
-                                <td className="py-2 px-4 text-gray-800">{el.sticker.name + ` - ` + el.sticker_number}</td>
-                                <td className="py-2 px-4 text-gray-800">{el.plastic_bag.name + ` - ` + el.plastic_bag_number}</td>
-                                <td className="py-2 px-4 text-gray-800">
-                                    {el.cartoon.map((cartoonEl, index) => {
-                                        return (
-                                            <span key={index} className="px-1.5 py-1 m-1 rounded-md bg-neutral-200 inline-block">
-                                                {cartoonEl.name}
-                                            </span>
-                                        );
-                                    })}
-                                </td>
-                                <td className="py-2 px-4 text-gray-800">
-                                    <div className="flex flex-col">
-                                        {el.components.map((comEl, index) => {
-                                            return (
-                                                <div className="flex flex-col mb-1 px-1.5 last:mb-0 border border-neutral-300 rounded-md w-fit" key={index}>
-                                                    <div className="">
-                                                        <span>Name - </span>
-                                                        <span>{comEl.id.name}</span>
-                                                    </div>
-                                                    <div className="">
-                                                        <span>Quantity - </span>
-                                                        <span>{comEl.quantity}</span>
-                                                    </div>
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                </td>
-                                <td className="py-2 px-4 text-gray-800">
-                                    <UpdateQuantity {...el} fetchProductList={fetchProductList} />
-                                </td>
-                            </tr>
+                            </motion.tr>
                         ))
                     ) : (
-                        <tr>
-                            <td colSpan="8" className="py-4 text-center text-gray-500">
-                                No product found
+                        <tr className="bg-[#fff2eb]">
+                            <td colSpan="10" className="py-6 text-center text-gray-500 text-[12px]">
+                                No products found
                             </td>
                         </tr>
                     )}
-                </tbody>
-            </table>
+                </motion.tbody>
+            </motion.table>
 
-            <div className="mt-4 flex justify-between items-center">
-                <button
+            <div className="mt-6 flex justify-between items-center">
+                <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                     disabled={currentPage === 1}
-                    className="py-2 px-4 bg-blue-500 text-white rounded-lg disabled:bg-gray-300"
+                    className="py-2 px-6 bg-blue-600 text-white font-semibold rounded-lg shadow-md transition-colors duration-300 hover:bg-blue-700 disabled:bg-gray-300 text-[12px]"
                 >
                     Previous
-                </button>
-                <span className="text-gray-700">
+                </motion.button>
+                <span className="text-gray-700 font-semibold text-[12px]">
                     Page {currentPage} of {totalPages}
                 </span>
-                <button
+                <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                     disabled={currentPage === totalPages}
-                    className="py-2 px-4 bg-blue-500 text-white rounded-lg disabled:bg-gray-300"
+                    className="py-2 px-6 bg-blue-600 text-white font-semibold rounded-lg shadow-md transition-colors duration-300 hover:bg-blue-700 disabled:bg-gray-300 text-[12px]"
                 >
                     Next
-                </button>
+                </motion.button>
             </div>
         </div>
     );

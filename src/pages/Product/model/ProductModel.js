@@ -6,6 +6,7 @@ import { ErrorMessage } from "../../../components/Error/ErrorMessage";
 import Button from "../../../components/Button/Button";
 import API from "../../../API/API";
 import Select from "react-select";
+import { motion } from "framer-motion";
 
 export default function ProductModel(props) {
     const { selectedProductDetails, fetchProductList, handleClickClose } = props;
@@ -111,7 +112,6 @@ export default function ProductModel(props) {
             const response = await API.post("/product", body);
 
             if (response?.success) {
-                console.log(`response ==>`, response);
                 fetchProductList();
                 handleClickClose();
             }
@@ -207,14 +207,23 @@ export default function ProductModel(props) {
 
     return (
         <>
-            <div className="fixed bg-black bg-opacity-50 inset-0 z-50 flex p-4 md:p-0 md:absolute md:z-[9] overflow-auto md:overflow-visible">
-                <div className="max-w-[450px] w-full rounded-xl px-8 py-6 md:mt-0 md:w-full md:p-4 lg:max-w-[439px] md:max-w-full md:rounded-none bg-white m-auto">
-                    <div className="flex flex-row justify-between items-center border-neutral-300 mb-6 lg:mb-4">
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="fixed bg-black bg-opacity-50 inset-0 z-50 flex p-4 md:p-0 md:absolute md:z-[9] overflow-auto md:overflow-visible"
+            >
+                <motion.div
+                    initial={{ scale: 0.9 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="max-w-[450px] w-full rounded-xl px-8 py-6 md:mt-0 md:w-full md:p-4 lg:max-w-[439px] md:max-w-full md:rounded-none bg-white m-auto"
+                >
+                    <div className="flex flex-row justify-between items-center mb-6 lg:mb-4">
                         <div>
-                            <span className="paragraph-large-medium">Component</span>
+                            <span className="text-xl">Component</span>
                         </div>
-
-                        <div onClick={handleClickClose} className="md:hidden cursor-pointer">
+                        <div onClick={handleClickClose} className="md:hidden cursor-pointer hover:text-gray-500 transition-colors duration-200">
                             <CloseIcon />
                         </div>
                     </div>
@@ -227,50 +236,69 @@ export default function ProductModel(props) {
                             control={control}
                             rules={{ required: "Please enter product name" }}
                         />
-
                         {errors?.name && <ErrorMessage className="" errors={errors?.name} />}
 
-                        <div className="">
+                        <div>
                             <label>Select Color</label>
                             <Select
                                 placeholder="Select color"
                                 onChange={handleSelectColor}
-                                isMulti={true}
+                                isMulti
                                 value={watch("color")}
                                 options={colorMenuItem?.filter((option) => !watch("color")?.some((selected) => selected.label === option.label))}
+                                className="react-select-container"
+                                classNamePrefix="react-select"
                             />
                         </div>
 
-                        <div className="">
+                        <div>
                             <span className="mb-0">Select Box</span>
                             <Select
                                 placeholder="Select Box"
                                 onChange={handleSelectBoxType}
                                 value={watch("box")}
-                                isMulti={true}
+                                isMulti
                                 options={boxType?.filter((option) => !watch("box")?.some((selected) => selected.label === option.label))}
+                                className="react-select-container"
+                                classNamePrefix="react-select"
                             />
                         </div>
 
-                        <div className="">
+                        <div>
                             <span className="mb-0">Select Cartoon</span>
                             <Select
                                 placeholder="Select Cartoon"
                                 onChange={handleChangeCartoon}
                                 value={watch("cartoon")}
-                                isMulti={true}
+                                isMulti
                                 options={cartoonMenuItem?.filter((option) => !watch("cartoon")?.some((selected) => selected.label === option.label))}
+                                className="react-select-container"
+                                classNamePrefix="react-select"
                             />
                         </div>
 
-                        <div className="">
+                        <div>
                             <span className="mb-0">Select Plastic Bag</span>
-                            <Select placeholder="Select Plastic Bag" onChange={handleChangePlasticBag} value={watch("plasticBagType")} options={plasticBagMenuItem} />
+                            <Select
+                                placeholder="Select Plastic Bag"
+                                onChange={handleChangePlasticBag}
+                                value={watch("plasticBagType")}
+                                options={plasticBagMenuItem}
+                                className="react-select-container"
+                                classNamePrefix="react-select"
+                            />
                         </div>
 
-                        <div className="">
+                        <div>
                             <span className="mb-0">Select Sticker</span>
-                            <Select placeholder="Select Sticker" onChange={handleChangeSticker} value={watch("stickerType")} options={stickerMenuItem} />
+                            <Select
+                                placeholder="Select Sticker"
+                                onChange={handleChangeSticker}
+                                value={watch("stickerType")}
+                                options={stickerMenuItem}
+                                className="react-select-container"
+                                classNamePrefix="react-select"
+                            />
                         </div>
 
                         <InputFieldForm
@@ -281,7 +309,6 @@ export default function ProductModel(props) {
                             control={control}
                             rules={{ required: "Please enter quantity" }}
                         />
-
                         {errors?.quantity && <ErrorMessage className="" errors={errors?.quantity} />}
 
                         <InputFieldForm
@@ -292,18 +319,16 @@ export default function ProductModel(props) {
                             control={control}
                             rules={{ required: "Please enter sticker quantity" }}
                         />
-
                         {errors?.stickerNumber && <ErrorMessage className="" errors={errors?.stickerNumber} />}
 
                         <InputFieldForm
                             type="number"
-                            label="Enter plastic bag"
+                            label="Enter plastic bag quantity"
                             placeholder="Enter plastic bag quantity"
                             name="plasticBagNumber"
                             control={control}
-                            rules={{ required: "Please enter plastic bag" }}
+                            rules={{ required: "Please enter plastic bag quantity" }}
                         />
-
                         {errors?.plasticBagNumber && <ErrorMessage className="" errors={errors?.plasticBagNumber} />}
 
                         <InputFieldForm
@@ -319,13 +344,21 @@ export default function ProductModel(props) {
                         <div>
                             <label>Components</label>
                             {fields.map((item, index) => (
-                                <div key={item.id} className="flex flex-row gap-4 mb-4 items-center">
+                                <motion.div
+                                    key={item.id}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.3 }}
+                                    className="flex flex-row gap-4 mb-4 items-center"
+                                >
                                     <div className="min-w-[50%] w-full">
                                         <Select
                                             placeholder="Select component"
                                             options={componentList}
                                             value={watch(`components.${index}.component`)}
                                             onChange={(selected) => setValue(`components.${index}.component`, selected)}
+                                            className="react-select-container"
+                                            classNamePrefix="react-select"
                                         />
                                     </div>
                                     <div className="max-w-[20%]">
@@ -337,20 +370,23 @@ export default function ProductModel(props) {
                                             rules={{ required: "Please enter quantity" }}
                                         />
                                     </div>
-                                    <div className="flex-none">
-                                        <Button label="Remove" onClick={() => remove(index)} />
-                                    </div>
-                                </div>
+
+                                    {!(index === 0 && fields.length) && (
+                                        <div className="flex-none">
+                                            <Button label="Remove" onClick={() => remove(index)} className="bg-red-600 hover:bg-red-700 text-white" />
+                                        </div>
+                                    )}
+                                </motion.div>
                             ))}
                             <Button label="Add Component" onClick={() => append({ component: null, quantity: "" })} />
                         </div>
                     </div>
 
-                    <div className="mt-24">
+                    <div className="mt-6">
                         <Button label="Save" onClick={handleSubmit(handleSave)} />
                     </div>
-                </div>
-            </div>
+                </motion.div>
+            </motion.div>
         </>
     );
 }

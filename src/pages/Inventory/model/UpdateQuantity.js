@@ -21,8 +21,6 @@ export default function UpdateQuantity(props) {
 
             const response = await API.put(`/admin/component/${_id}`, body);
 
-            console.log(`response ==>`, response);
-
             if (response?.success) {
                 fetchComponentList();
                 handleClickClose();

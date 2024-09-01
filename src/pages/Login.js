@@ -29,7 +29,6 @@ const Login = () => {
             if (!!response.token) {
                 localStorage.setItem("auth_token", response.token);
                 navigate("/dashboard");
-                console.log(`response ==>`, response);
             }
         } catch (error) {
             console.log(`error ==>`, error);

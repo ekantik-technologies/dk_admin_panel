@@ -52,7 +52,6 @@ export default function ComponentModel(props) {
             const response = await API.post("/inventory/cartoon/components", body);
 
             if (response?.success) {
-                console.log(`response ==>`, response);
                 fetchComponentList();
                 handleClickClose();
             }

@@ -17,7 +17,7 @@ export const CheckBox = (props) => {
     return (
         <>
             <div className={`checkbox-style flex flex-row items-center relative ml-${marginL} mt-${marginT} mr-${marginR} mb-${marginB}`}>
-                <input type="checkbox" id={optionId} checked={isChecked} onChange={handleCheckboxChange} />
+                <input type="checkbox" className="w-5 h-5" id={optionId} checked={isChecked} onChange={handleCheckboxChange} />
                 {label && (
                     <label htmlFor={optionId} className="checkbox-label">
                         <span className={`${labelStyle ?? "paragraph-small-medium"} ${paddingL}`}>{label}</span>
