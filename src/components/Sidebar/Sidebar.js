@@ -34,9 +34,12 @@ const Sidebar = () => {
             variants={sidebarVariants}
             initial={false}
         >
-            <div className="text-center text-xl font-bold mb-6 cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
-                <motion.img src={dkLogo} className="w-48 h-auto mx-auto" whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }} />
+            <div className="text-center text-xl font-bold mb-6 cursor-pointer">
+                <NavLink to="/dashboard">
+                    <motion.img src={dkLogo} className="w-48 h-auto mx-auto" whileHover={{ scale: 1.1 }} transition={{ duration: 0.2 }} />
+                </NavLink>
             </div>
+
             <nav className="flex-1 w-full">
                 <ul className="space-y-2 pl-2">
                     {[

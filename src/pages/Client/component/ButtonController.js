@@ -26,7 +26,7 @@ export default function ButtonController(props) {
         <div className="flex flex-row w-full justify-between mb-6">
             <div className="flex flex-row gap-4 w-full">
                 <Button className="max-w-[200px]" label="Select All" onClick={handleSelectAll} />
-                <Button className="max-w-[200px]" label="Delete" onClick={handleDelete} />
+                <Button className="max-w-[200px]" label="Delete" disabled={!selectedClient.length} onClick={handleDelete} />
             </div>
 
             <Button className="max-w-[200px]" label="Add Client" onClick={() => setShowPopup(CREATE_CLIENT)} />

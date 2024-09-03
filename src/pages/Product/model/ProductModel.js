@@ -54,7 +54,7 @@ export default function ProductModel(props) {
 
     const fetchComponentList = async () => {
         try {
-            const response = await API.get(`/inventory/machining/components?page=${1}`);
+            const response = await API.get(`/inventory/machining/components`);
             setComponentList(response.components.map((el) => ({ label: el.name, value: el._id })));
         } catch (error) {
             console.error("Error fetching users:", error);
@@ -128,7 +128,7 @@ export default function ProductModel(props) {
 
     const fetchBox = async () => {
         try {
-            const response = await API.get(`/inventory/box/components?page=${1}`);
+            const response = await API.get(`/inventory/box/components`);
             setBoxType(response.components.map((el) => ({ label: el.name, value: el })));
         } catch (error) {
             console.log(`error ==>`, error);
@@ -139,7 +139,7 @@ export default function ProductModel(props) {
 
     const fetchSticker = async () => {
         try {
-            const response = await API.get(`/inventory/sticker/components?page=${1}`);
+            const response = await API.get(`/inventory/sticker/components`);
             setStickerMenuItem(response.components.map((el) => ({ label: el.name, value: el })));
         } catch (error) {
             console.log(`error ==>`, error);
@@ -159,7 +159,7 @@ export default function ProductModel(props) {
 
     const fetchPlasticBag = async () => {
         try {
-            const response = await API.get(`/inventory/plastic_bag/components?page=${1}`);
+            const response = await API.get(`/inventory/plastic_bag/components`);
 
             setPlasticBagMenuItem(response.components.map((el) => ({ label: el.name, value: el })));
         } catch (error) {
@@ -169,7 +169,7 @@ export default function ProductModel(props) {
 
     const fetchCartoonList = async () => {
         try {
-            const response = await API.get(`/inventory/cartoon/components?page=${1}`);
+            const response = await API.get(`/inventory/cartoon/components`);
             setCartoonMenuItem(response.components.map((el) => ({ label: el.name, value: el })));
         } catch (error) {
             console.log(`error ==>`, error);
@@ -217,11 +217,11 @@ export default function ProductModel(props) {
                     initial={{ scale: 0.9 }}
                     animate={{ scale: 1 }}
                     transition={{ duration: 0.3 }}
-                    className="max-w-[450px] w-full rounded-xl px-8 py-6 md:mt-0 md:w-full md:p-4 lg:max-w-[439px] md:max-w-full md:rounded-none bg-white m-auto"
+                    className="max-w-[900px] w-full rounded-xl px-8 py-6 md:mt-0 md:w-full md:p-4 lg:max-w-[439px] md:max-w-full md:rounded-none bg-white m-auto"
                 >
                     <div className="flex flex-row justify-between items-center mb-6 lg:mb-4">
                         <div>
-                            <span className="text-xl">Component</span>
+                            <span className="text-xl font-semibold text-gray-700">Component</span>
                         </div>
                         <div onClick={handleClickClose} className="md:hidden cursor-pointer hover:text-gray-500 transition-colors duration-200">
                             <CloseIcon />
@@ -238,111 +238,9 @@ export default function ProductModel(props) {
                         />
                         {errors?.name && <ErrorMessage className="" errors={errors?.name} />}
 
-                        <div>
-                            <label>Select Color</label>
-                            <Select
-                                placeholder="Select color"
-                                onChange={handleSelectColor}
-                                isMulti
-                                value={watch("color")}
-                                options={colorMenuItem?.filter((option) => !watch("color")?.some((selected) => selected.label === option.label))}
-                                className="react-select-container"
-                                classNamePrefix="react-select"
-                            />
-                        </div>
-
-                        <div>
-                            <span className="mb-0">Select Box</span>
-                            <Select
-                                placeholder="Select Box"
-                                onChange={handleSelectBoxType}
-                                value={watch("box")}
-                                isMulti
-                                options={boxType?.filter((option) => !watch("box")?.some((selected) => selected.label === option.label))}
-                                className="react-select-container"
-                                classNamePrefix="react-select"
-                            />
-                        </div>
-
-                        <div>
-                            <span className="mb-0">Select Cartoon</span>
-                            <Select
-                                placeholder="Select Cartoon"
-                                onChange={handleChangeCartoon}
-                                value={watch("cartoon")}
-                                isMulti
-                                options={cartoonMenuItem?.filter((option) => !watch("cartoon")?.some((selected) => selected.label === option.label))}
-                                className="react-select-container"
-                                classNamePrefix="react-select"
-                            />
-                        </div>
-
-                        <div>
-                            <span className="mb-0">Select Plastic Bag</span>
-                            <Select
-                                placeholder="Select Plastic Bag"
-                                onChange={handleChangePlasticBag}
-                                value={watch("plasticBagType")}
-                                options={plasticBagMenuItem}
-                                className="react-select-container"
-                                classNamePrefix="react-select"
-                            />
-                        </div>
-
-                        <div>
-                            <span className="mb-0">Select Sticker</span>
-                            <Select
-                                placeholder="Select Sticker"
-                                onChange={handleChangeSticker}
-                                value={watch("stickerType")}
-                                options={stickerMenuItem}
-                                className="react-select-container"
-                                classNamePrefix="react-select"
-                            />
-                        </div>
-
-                        <InputFieldForm
-                            type="number"
-                            label="Enter Available Quantity"
-                            placeholder="Enter Available Quantity"
-                            name="quantity"
-                            control={control}
-                            rules={{ required: "Please enter quantity" }}
-                        />
-                        {errors?.quantity && <ErrorMessage className="" errors={errors?.quantity} />}
-
-                        <InputFieldForm
-                            type="number"
-                            label="Enter sticker quantity"
-                            placeholder="Enter sticker quantity"
-                            name="stickerNumber"
-                            control={control}
-                            rules={{ required: "Please enter sticker quantity" }}
-                        />
-                        {errors?.stickerNumber && <ErrorMessage className="" errors={errors?.stickerNumber} />}
-
-                        <InputFieldForm
-                            type="number"
-                            label="Enter plastic bag quantity"
-                            placeholder="Enter plastic bag quantity"
-                            name="plasticBagNumber"
-                            control={control}
-                            rules={{ required: "Please enter plastic bag quantity" }}
-                        />
-                        {errors?.plasticBagNumber && <ErrorMessage className="" errors={errors?.plasticBagNumber} />}
-
-                        <InputFieldForm
-                            type="number"
-                            label="Enter number of product feet in single box"
-                            placeholder="Enter number of product feet in single box"
-                            name="productInBox"
-                            control={control}
-                            rules={{ required: "Please enter number of product feet in single box" }}
-                        />
-
                         {/* Components Section */}
                         <div>
-                            <label>Components</label>
+                            <label className="font-semibold text-gray-700">Components</label>
                             {fields.map((item, index) => (
                                 <motion.div
                                     key={item.id}
@@ -379,6 +277,123 @@ export default function ProductModel(props) {
                                 </motion.div>
                             ))}
                             <Button label="Add Component" onClick={() => append({ component: null, quantity: "" })} />
+                        </div>
+
+                        <div>
+                            <label className="font-semibold text-gray-700">Select Color</label>
+                            <Select
+                                placeholder="Select color"
+                                onChange={handleSelectColor}
+                                isMulti
+                                value={watch("color")}
+                                options={colorMenuItem?.filter((option) => !watch("color")?.some((selected) => selected.label === option.label))}
+                                className="react-select-container"
+                                classNamePrefix="react-select"
+                            />
+                        </div>
+
+                        <div className="flex flex-row gap-4">
+                            <div className="w-1/2">
+                                <span className="mb-0 font-semibold text-gray-700">Select Box</span>
+                                <Select
+                                    placeholder="Select Box"
+                                    onChange={handleSelectBoxType}
+                                    value={watch("box")}
+                                    isMulti
+                                    options={boxType?.filter((option) => !watch("box")?.some((selected) => selected.label === option.label))}
+                                    className="react-select-container"
+                                    classNamePrefix="react-select"
+                                />
+                            </div>
+
+                            <div className="w-1/2">
+                                <span className="mb-0 font-semibold text-gray-700">Select Cartoon</span>
+                                <Select
+                                    placeholder="Select Cartoon"
+                                    onChange={handleChangeCartoon}
+                                    value={watch("cartoon")}
+                                    isMulti
+                                    options={cartoonMenuItem?.filter((option) => !watch("cartoon")?.some((selected) => selected.label === option.label))}
+                                    className="react-select-container"
+                                    classNamePrefix="react-select"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="flex flex-row gap-4">
+                            <div className="w-1/2">
+                                <span className="mb-0 font-semibold text-gray-700">Select Plastic Bag</span>
+                                <Select
+                                    placeholder="Select Plastic Bag"
+                                    onChange={handleChangePlasticBag}
+                                    value={watch("plasticBagType")}
+                                    options={plasticBagMenuItem}
+                                    className="react-select-container"
+                                    classNamePrefix="react-select"
+                                />
+                            </div>
+
+                            <div className="w-1/2">
+                                <span className="mb-0 font-semibold text-gray-700">Select Sticker</span>
+                                <Select
+                                    placeholder="Select Sticker"
+                                    onChange={handleChangeSticker}
+                                    value={watch("stickerType")}
+                                    options={stickerMenuItem}
+                                    className="react-select-container"
+                                    classNamePrefix="react-select"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="flex flex-row gap-4">
+                            <div className="w-1/2">
+                                <InputFieldForm
+                                    type="number"
+                                    label="Enter Available Quantity"
+                                    placeholder="Enter Available Quantity"
+                                    name="quantity"
+                                    control={control}
+                                    rules={{ required: "Please enter quantity" }}
+                                />
+                                {errors?.quantity && <ErrorMessage className="" errors={errors?.quantity} />}
+                            </div>
+                            <div className="w-1/2">
+                                <InputFieldForm
+                                    type="number"
+                                    label="Enter sticker quantity"
+                                    placeholder="Enter sticker quantity"
+                                    name="stickerNumber"
+                                    control={control}
+                                    rules={{ required: "Please enter sticker quantity" }}
+                                />
+                                {errors?.stickerNumber && <ErrorMessage className="" errors={errors?.stickerNumber} />}
+                            </div>
+                        </div>
+
+                        <div className="flex flex-row gap-4">
+                            <div className="w-1/2">
+                                <InputFieldForm
+                                    type="number"
+                                    label="Enter plastic bag quantity"
+                                    placeholder="Enter plastic bag quantity"
+                                    name="plasticBagNumber"
+                                    control={control}
+                                    rules={{ required: "Please enter plastic bag quantity" }}
+                                />
+                                {errors?.plasticBagNumber && <ErrorMessage className="" errors={errors?.plasticBagNumber} />}
+                            </div>
+
+                            <div className="w-1/2">
+                                <InputFieldForm
+                                    type="number"
+                                    label="Enter number of product feet in single box"
+                                    placeholder="Enter number of product feet in single box"
+                                    name="productInBox"
+                                    control={control}
+                                    rules={{ required: "Please enter number of product feet in single box" }}
+                                />
+                            </div>
                         </div>
                     </div>
 

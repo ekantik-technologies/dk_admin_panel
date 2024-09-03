@@ -9,8 +9,6 @@ import Button from "../../../../../components/Button/Button";
 export default function ComponentModel(props) {
     const { selectedComponentDetails, fetchComponentList, handleClickClose, department } = props;
 
-    console.log(`department ==>`, department);
-
     const {
         control,
         formState: { errors },
@@ -78,7 +76,7 @@ export default function ComponentModel(props) {
                 <div className="max-w-[450px] w-full rounded-xl px-8 py-6 md:mt-0 md:w-full md:p-4 lg:max-w-[439px] md:max-w-full md:rounded-none bg-white m-auto">
                     <div className="flex flex-row justify-between items-center border-neutral-300 mb-6 lg:mb-4">
                         <div>
-                            <span className="paragraph-large-medium">{department}</span>
+                            <span className="paragraph-large-medium capitalize font-bold text-xl">{department}</span>
                         </div>
 
                         <div onClick={handleClickClose} className="md:hidden cursor-pointer">

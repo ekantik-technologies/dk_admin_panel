@@ -1,12 +1,8 @@
 import React from "react";
 import { CheckBox } from "../../../../../components/CheckBox/CheckBox";
-import { ReactComponent as EditIcon } from "../../../../../Assets/edit.svg";
 import { EDIT_COMPONENT } from "../../../../../constants/modelConstant";
 import UpdateQuantity from "../../../component/UpdateQuantity";
 import { motion } from "framer-motion";
-
-const AnimatedTable = motion.table;
-const AnimatedTr = motion.tr;
 
 const ComponentTable = (props) => {
     const {
@@ -32,7 +28,12 @@ const ComponentTable = (props) => {
 
     return (
         <div className="">
-            <AnimatedTable className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+            <motion.table
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="min-w-full bg-[#3f484f] border border-gray-300 rounded-lg shadow-lg overflow-hidden"
+            >
                 <thead>
                     <tr className="bg-gradient-to-r from-[#3f484f] to-[#5b636b] text-white">
                         <th className="py-2 px-4 text-left w-[5%]">
@@ -46,15 +47,20 @@ const ComponentTable = (props) => {
                     </tr>
                 </thead>
 
-                <tbody>
+                <motion.tbody
+                    initial="hidden"
+                    animate="visible"
+                    variants={{
+                        hidden: { opacity: 0, y: 20 },
+                        visible: { opacity: 1, y: 0, transition: { staggerChildren: 0.1 } },
+                    }}
+                >
                     {componentList?.length > 0 ? (
                         componentList.map((el, index) => (
-                            <AnimatedTr
+                            <motion.tr
                                 key={index}
-                                className="border-b hover:bg-[#fef3e7]"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ duration: 0.3, ease: "easeInOut" }}
+                                variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+                                className={`${index % 2 === 0 ? "bg-[#fff9f5]" : "bg-[#fff2eb]"}`}
                             >
                                 <td className="py-2 px-4 text-gray-800">
                                     <div className="flex flex-row items-center gap-2">
@@ -82,17 +88,17 @@ const ComponentTable = (props) => {
                                         fetchComponentList={fetchComponentList}
                                     />
                                 </td>
-                            </AnimatedTr>
+                            </motion.tr>
                         ))
                     ) : (
-                        <tr>
-                            <td colSpan="5" className="py-4 text-center text-gray-500">
+                        <tr className="bg-[#fff9f5]">
+                            <td colSpan="6" className="py-4 text-center text-gray-500">
                                 No component found
                             </td>
                         </tr>
                     )}
-                </tbody>
-            </AnimatedTable>
+                </motion.tbody>
+            </motion.table>
 
             <div className="mt-4 flex justify-between items-center">
                 <button

@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 
 export default function ProductTable(props) {
     const { setCurrentPage, currentPage, totalPages, productList } = props;
@@ -6,38 +7,53 @@ export default function ProductTable(props) {
     return (
         <>
             <div className="">
-                <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+                <motion.table
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="min-w-full bg-[#3f484f] border border-gray-300 rounded-lg shadow-lg overflow-hidden"
+                >
                     <thead>
-                        <tr className="bg-gray-100 border-b">
-                            <th className="py-2 px-4 text-left text-gray-600">Name</th>
-                            <th className="py-2 px-4 text-left text-gray-600">Quantity</th>
-                            <th className="py-2 px-4 text-left text-gray-600">Box</th>
-                            <th className="py-2 px-4 text-left text-gray-600">Cartoon</th>
-                            <th className="py-2 px-4 text-left text-gray-600">Color</th>
+                        <tr className="bg-gradient-to-r from-[#3f484f] to-[#5b636b] text-white">
+                            <th className="py-2 px-4 text-left">Name</th>
+                            <th className="py-2 px-4 text-left">Quantity</th>
+                            <th className="py-2 px-4 text-left">Box</th>
+                            <th className="py-2 px-4 text-left">Cartoon</th>
+                            <th className="py-2 px-4 text-left">Color</th>
                         </tr>
                     </thead>
 
-                    <tbody>
+                    <motion.tbody
+                        initial="hidden"
+                        animate="visible"
+                        variants={{
+                            hidden: { opacity: 0, y: 20 },
+                            visible: { opacity: 1, y: 0, transition: { staggerChildren: 0.1 } },
+                        }}
+                    >
                         {productList?.length > 0 ? (
                             productList.map((el, index) => (
-                                <tr key={index} className="border-b hover:bg-gray-50">
-                                    {console.log(`const el = `, JSON.stringify(el))}
+                                <motion.tr
+                                    key={index}
+                                    variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+                                    className={`${index % 2 === 0 ? "bg-[#fff9f5]" : "bg-[#fff2eb]"}`}
+                                >
                                     <td className="py-2 px-4 text-gray-800">{el.id.name}</td>
                                     <td className="py-2 px-4 text-gray-800">{el.quantity}</td>
                                     <td className="py-2 px-4 text-gray-800">{el.box.name}</td>
                                     <td className="py-2 px-4 text-gray-800">{el?.cartoon?.cartoonType?.name ?? "No Cartoon for This Product"}</td>
                                     <td className="py-2 px-4 text-gray-800">{el.color.name}</td>
-                                </tr>
+                                </motion.tr>
                             ))
                         ) : (
-                            <tr>
-                                <td colSpan="4" className="py-4 text-center text-gray-500">
+                            <tr className="bg-[#fff9f5]">
+                                <td colSpan="5" className="py-4 text-center text-gray-500">
                                     No Product Found
                                 </td>
                             </tr>
                         )}
-                    </tbody>
-                </table>
+                    </motion.tbody>
+                </motion.table>
 
                 <div className="mt-4 flex justify-between items-center">
                     <button

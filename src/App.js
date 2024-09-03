@@ -11,8 +11,14 @@ import Product from "./pages/Product";
 import Loader from "./components/Loader/Loader";
 import OrderStatus from "./pages/OrderStatus";
 import RejectedOrder from "./pages/RejectedOrder/RejectedOrder";
+import { useEffect } from "react";
+import { setupNotifications } from "./firebase";
 
 function App() {
+    useEffect(() => {
+        !localStorage.getItem("firebaseToken") && setupNotifications();
+    }, []);
+
     return (
         <>
             <Loader />
@@ -27,7 +33,7 @@ function App() {
                             <div className="flex">
                                 <Sidebar />
 
-                                <div className="flex-1 p-4 ml-64">
+                                <div className="flex-1 p-4 ml-64 bg-gradient-to-r from-zinc-50 to-zinc-100 min-h-screen">
                                     <Routes>
                                         <Route
                                             path="/dashboard"
@@ -114,3 +120,15 @@ function App() {
 }
 
 export default App;
+
+// import React, { useEffect } from "react";
+// import { setupNotifications } from "./firebase";
+
+// function App() {
+//     useEffect(() => {
+//         setupNotifications();
+//     }, []);
+
+//     return <div className="App">{/* Your app content */}</div>;
+// }
+// export default App;

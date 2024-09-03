@@ -43,11 +43,11 @@ export default function UpdateQuantity(props) {
         <>
             <div className="">
                 <div className="flex flex-row items-center gap-2 max-w-[300px] mt-2">
-                    <span className="cursor-pointer bg-[#5efff2] hover:bg-[#10ada1] rounded-lg font-bold text-3xl p-1" onClick={() => setMode("history")}>
-                        <TimerIcon stroke="#177d74" className="w-5 h-5 hover:stroke-white" />
+                    <span className="cursor-pointer bg-[#5efff2] group hover:bg-[#10ada1] rounded-lg font-bold text-3xl p-1" onClick={() => setMode("history")}>
+                        <TimerIcon stroke="#177d74" className="w-5 h-5 group-hover:stroke-white" />
                     </span>
-                    <span className="cursor-pointer bg-green-200 hover:bg-green-400 p-1 rounded-lg" onClick={onClickEdit}>
-                        <EditIcon className="w-5 h-5" stroke="#0a730a" />
+                    <span className="cursor-pointer group bg-green-200 hover:bg-green-400 p-1 rounded-lg" onClick={onClickEdit}>
+                        <EditIcon className="w-5 h-5 group-hover:stroke-white" stroke="#0a730a" />
                     </span>
                 </div>
             </div>

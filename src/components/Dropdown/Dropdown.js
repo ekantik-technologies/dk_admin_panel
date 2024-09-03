@@ -1,5 +1,5 @@
 import { Menu, Transition } from "@headlessui/react";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { ReactComponent as DownIcon } from "../../Assets/chevron-down.svg";
 
 export default function Dropdown(props) {
@@ -16,10 +16,6 @@ export default function Dropdown(props) {
             props.setSelectedItems([...selectedItems, data]);
         }
     };
-
-    // useEffect(() => {
-    //     setSelectedItems(props.selectedItems);
-    // }, [props.selectedItems]);
 
     return (
         <div className="w-full">
@@ -48,7 +44,7 @@ export default function Dropdown(props) {
                     <Menu.Items className="absolute left-0 mt-2 w-full z-10 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
                         <div className="px-1 py-1">
                             {menuItem.map((el, index) => {
-                                const isSelected = selectedItems.flatMap((el) => el.value).includes(el.value);
+                                const isSelected = selectedItems.flatMap((el) => el.value).includes(el.value) || props.selectedItems.flatMap((el) => el.value).includes(el.value);
 
                                 return (
                                     <Menu.Item
