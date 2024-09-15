@@ -4,6 +4,7 @@ import { CheckBox } from "../../../components/CheckBox/CheckBox";
 import { ReactComponent as EditIcon } from "../../../Assets/edit.svg";
 import { EDIT_CLIENT } from "../../../constants/modelConstant";
 import { motion } from "framer-motion";
+import { decrypt } from "../../UserSetting";
 
 const ClientTable = (props) => {
     const { selectedClient, setSelectedClient, currentPage, totalPages, clients, setCurrentPage, setShowPopup, setSelectedClientDetails } = props;
@@ -14,14 +15,6 @@ const ClientTable = (props) => {
                   return prevState.filter((el) => el !== id);
               })
             : setSelectedClient((prevState) => [...prevState, id]);
-    };
-
-    const handleSelectAll = () => {
-        if (selectedClient.length === clients?.length) {
-            setSelectedClient([]);
-        } else {
-            setSelectedClient(clients.map((el) => el._id));
-        }
     };
 
     return (
@@ -35,9 +28,11 @@ const ClientTable = (props) => {
                 <thead>
                     <tr className="bg-gradient-to-r from-[#3f484f] uppercase to-[#5b636b] text-white">
                         <th className="py-2 px-3 w-[2%] text-left font-semibold uppercase tracking-wide text-[12px]">
-                            <CheckBox setIsChecked={() => handleSelectAll()} paddingL="pl-3" isChecked={clients.length === selectedClient?.length} />
+                            {/* <CheckBox setIsChecked={() => handleSelectAll()} paddingL="pl-3" isChecked={clients.length === selectedClient?.length} /> */}
                         </th>
                         <th className="py-2 px-4 text-left">Client Name</th>
+                        <th className="py-2 px-4 text-left">Client Email</th>
+                        <th className="py-2 px-4 text-left">Client Password</th>
                         <th className="py-2 px-4 text-left">Created At</th>
                         <th className="py-2 px-4 text-left">Action</th>
                     </tr>
@@ -54,6 +49,7 @@ const ClientTable = (props) => {
                                 <td className="py-2 px-4 text-gray-800">
                                     <div className="flex flex-row items-center gap-2">
                                         <CheckBox
+                                            disabled={user.linked}
                                             setIsChecked={(isChecked) => handleSelection(isChecked, user._id)}
                                             optionId={user.name}
                                             isChecked={selectedClient.includes(user._id)}
@@ -61,6 +57,8 @@ const ClientTable = (props) => {
                                     </div>
                                 </td>
                                 <td className="py-2 px-4 text-gray-800">{user.name}</td>
+                                <td className="py-2 px-4 text-gray-800">{user.email}</td>
+                                <td className="py-2 px-4 text-gray-800">{user.password && decrypt(user.password)}</td>
                                 <td className="py-2 px-4 text-gray-800">{format(new Date(user.created_at), "MMMM d, yyyy h:mm a")}</td>
                                 <td className="py-2 px-4">
                                     <div
@@ -78,7 +76,7 @@ const ClientTable = (props) => {
                         ))
                     ) : (
                         <tr className="bg-[#fff2eb]">
-                            <td colSpan="4" className="py-4 text-center text-gray-500">
+                            <td colSpan="6" className="py-4 text-center text-gray-500">
                                 No clients found
                             </td>
                         </tr>

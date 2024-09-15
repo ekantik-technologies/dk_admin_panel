@@ -19,12 +19,20 @@ export default function Machining(props) {
     const [selectedComponent, setSelectedComponent] = useState([]);
 
     const handleSelectAll = () => {
-        selectedComponent.length !== componentList.length ? setSelectedComponent(componentList.map((el) => el._id)) : setSelectedComponent([]);
+        !selectedComponent.length
+            ? setSelectedComponent(
+                  componentList
+                      .map((el) => {
+                          if (!el.linked) return el._id;
+                      })
+                      .filter((el) => !!el)
+              )
+            : setSelectedComponent([]);
     };
 
     const fetchComponentList = async () => {
         try {
-            const response = await API.get(`/inventory/${department}/components?page=${currentPage}`);
+            const response = await API.get(`/inventory/${department}/components?page=${currentPage}&limit=${10}`);
             setComponentList(response.components);
             setCurrentPage(currentPage);
             setTotalPages(response.total_pages);

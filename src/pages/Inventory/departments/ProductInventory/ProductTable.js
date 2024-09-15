@@ -38,11 +38,11 @@ export default function ProductTable(props) {
                                     variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
                                     className={`${index % 2 === 0 ? "bg-[#fff9f5]" : "bg-[#fff2eb]"}`}
                                 >
-                                    <td className="py-2 px-4 text-gray-800">{el.id.name}</td>
-                                    <td className="py-2 px-4 text-gray-800">{el.quantity}</td>
-                                    <td className="py-2 px-4 text-gray-800">{el.box.name}</td>
+                                    <td className="py-2 px-4 text-gray-800">{el?.id?.name}</td>
+                                    <td className="py-2 px-4 text-gray-800">{el?.quantity}</td>
+                                    <td className="py-2 px-4 text-gray-800">{el?.box?.name}</td>
                                     <td className="py-2 px-4 text-gray-800">{el?.cartoon?.cartoonType?.name ?? "No Cartoon for This Product"}</td>
-                                    <td className="py-2 px-4 text-gray-800">{el.color.name}</td>
+                                    <td className="py-2 px-4 text-gray-800">{el?.color?.name}</td>
                                 </motion.tr>
                             ))
                         ) : (
@@ -57,7 +57,7 @@ export default function ProductTable(props) {
 
                 <div className="mt-4 flex justify-between items-center">
                     <button
-                        onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                        onClick={() => setCurrentPage((prev) => prev - 1)}
                         disabled={currentPage === 1}
                         className="py-2 px-4 bg-blue-500 text-white rounded-lg disabled:bg-gray-300"
                     >
@@ -67,7 +67,7 @@ export default function ProductTable(props) {
                         Page {currentPage} of {totalPages}
                     </span>
                     <button
-                        onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                        onClick={() => setCurrentPage((prev) => prev + 1)}
                         disabled={currentPage === totalPages}
                         className="py-2 px-4 bg-blue-500 text-white rounded-lg disabled:bg-gray-300"
                     >

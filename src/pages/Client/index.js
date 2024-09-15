@@ -17,12 +17,20 @@ export default function Index() {
     const [selectedClient, setSelectedClient] = useState([]);
 
     const handleSelectAll = () => {
-        selectedClient.length !== clients.length ? setSelectedClient(clients.map((el) => el._id)) : setSelectedClient([]);
+        !selectedClient.length
+            ? setSelectedClient(
+                  clients
+                      .map((el) => {
+                          if (!el.linked) return el._id;
+                      })
+                      .filter((el) => !!el)
+              )
+            : setSelectedClient([]);
     };
 
     const fetchClientList = async () => {
         try {
-            const response = await API.get(`/admin/clients?page=${currentPage}`);
+            const response = await API.get(`/admin/clients?page=${currentPage}&limit=${10}`);
             setClients(response.clients);
             setCurrentPage(currentPage);
             setTotalPages(response.total_pages);

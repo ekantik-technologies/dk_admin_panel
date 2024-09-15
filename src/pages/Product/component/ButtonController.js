@@ -8,7 +8,7 @@ export default function ButtonController(props) {
 
     const handleDelete = async () => {
         try {
-            const response = await API.delete("/admin/products", {
+            const response = await API.delete("/product", {
                 data: { ids: selectedProduct },
             });
 

@@ -41,13 +41,13 @@ export default function MachiningOrderCard(props) {
             {product.map((el, index) => (
                 <div key={index} className="border border-neutral-300 p-3 rounded-lg bg-gray-50 my-4 shadow-sm">
                     <div className="flex flex-row justify-between mb-2">
-                        <h1 className="text-lg font-bold text-gray-900">{el.id.name}</h1>
-                        <span className="text-lg font-bold text-gray-900">{el.quantity}</span>
+                        <h1 className="text-lg font-bold text-gray-900">{el?.id?.name}</h1>
+                        <span className="text-lg font-bold text-gray-900">{el?.quantity}</span>
                     </div>
 
                     <div className="mb-2">
                         <span className="font-medium text-gray-700">Color :</span>
-                        <span className="text-gray-800">{el.color.name}</span>
+                        <span className="text-gray-800">{el?.color?.name}</span>
                     </div>
 
                     <div className="mb-2">
@@ -81,15 +81,15 @@ export default function MachiningOrderCard(props) {
                                         animate={{ opacity: 1 }}
                                         transition={{ duration: 0.3 }}
                                     >
-                                        <td className="py-2 px-4 text-gray-800">{compEl.id.name}</td>
-                                        {department === "newOrder" && <td className="py-2 px-4 text-gray-800">{compEl.id.quantity}</td>}
+                                        <td className="py-2 px-4 text-gray-800">{compEl?.id?.name}</td>
+                                        {department === "newOrder" && <td className="py-2 px-4 text-gray-800">{compEl?.id?.quantity}</td>}
                                         <td className="py-2 px-4 text-gray-800">{compEl.quantity * el.quantity}</td>
                                         {department !== "pending" && (
                                             <td className="py-2 px-4 text-gray-800">
                                                 <div
                                                     className={`w-4 h-4 rounded-full ${
                                                         department === "newOrder"
-                                                            ? compEl.quantity * el.quantity <= compEl.id.quantity
+                                                            ? compEl.quantity * el.quantity <= compEl?.id?.quantity
                                                                 ? "bg-green-500"
                                                                 : "bg-red-500"
                                                             : compEl.status === "pending"

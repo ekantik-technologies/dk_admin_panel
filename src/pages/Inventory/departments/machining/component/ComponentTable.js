@@ -22,8 +22,21 @@ const ComponentTable = (props) => {
         selectedComponent.includes(id) ? setSelectedComponent((prevState) => prevState.filter((el) => el !== id)) : setSelectedComponent((prevState) => [...prevState, id]);
     };
 
-    const handleSelectAll = () => {
-        componentList.map((el) => handleSelection(null, el._id));
+    const handleSelectAll = (checked) => {
+        // componentList.forEach((el) => {
+        //     if (!el.linked) setSelectedComponent((prevState) => [...prevState, el._id]);
+        // });
+
+        checked
+            ? setSelectedComponent(
+                  componentList
+                      .map((el) => {
+                          if (!el.linked) return el._id;
+                          return null;
+                      })
+                      .filter((el) => !!el)
+              )
+            : setSelectedComponent([]);
     };
 
     return (
@@ -36,9 +49,9 @@ const ComponentTable = (props) => {
             >
                 <thead>
                     <tr className="bg-gradient-to-r from-[#3f484f] to-[#5b636b] text-white">
-                        <th className="py-2 px-4 text-left w-[5%]">
-                            <CheckBox setIsChecked={() => handleSelectAll()} isChecked={selectedComponent.length === componentList?.length} />
-                        </th>
+                        {/* <th className="py-2 px-4 text-left w-[5%]">
+                            <CheckBox setIsChecked={(checked) => handleSelectAll(checked)} isChecked={selectedComponent.length === componentList?.length} />
+                        </th> */}
                         <th className="py-2 px-4 text-left">Name</th>
                         <th className="py-2 px-4 text-left">Quantity</th>
                         <th className="py-2 px-4 text-left">Min. Quantity</th>
@@ -66,7 +79,7 @@ const ComponentTable = (props) => {
                                     <div className="flex flex-row items-center gap-2">
                                         <CheckBox
                                             setIsChecked={(isChecked) => handleSelection(isChecked, el._id)}
-                                            // label={el.name}
+                                            disabled={el.linked}
                                             paddingL="pl-3"
                                             optionId={el.name}
                                             isChecked={selectedComponent.includes(el._id)}
@@ -102,7 +115,7 @@ const ComponentTable = (props) => {
 
             <div className="mt-4 flex justify-between items-center">
                 <button
-                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                    onClick={() => setCurrentPage((prev) => prev - 1)}
                     disabled={currentPage === 1}
                     className="py-2 px-4 bg-blue-500 text-white rounded-lg shadow-md transition-colors duration-300 hover:bg-blue-600 disabled:bg-gray-300"
                 >
@@ -112,7 +125,7 @@ const ComponentTable = (props) => {
                     Page {currentPage} of {totalPages}
                 </span>
                 <button
-                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                    onClick={() => setCurrentPage((prev) => prev + 1)}
                     disabled={currentPage === totalPages}
                     className="py-2 px-4 bg-blue-500 text-white rounded-lg shadow-md transition-colors duration-300 hover:bg-blue-600 disabled:bg-gray-300"
                 >

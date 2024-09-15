@@ -4,15 +4,15 @@ import { motion } from "framer-motion";
 
 const AnimatedInput = motion.input;
 
-export default function InputField({ label, onChange, type = "text", placeholder, value = "" }) {
+export default function InputField({ label, onChange, type = "text", placeholder, value = "", className }) {
     return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col">
             {label && <label className="font-semibold text-gray-700">{label}</label>}
             <AnimatedInput
                 type={type}
                 onChange={onChange}
                 value={value}
-                className="border border-neutral-300 rounded-md py-3 px-4 transition-transform duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-neutral-300 focus:border-[#3f484f]"
+                className={`border border-neutral-300 rounded-md py-3 px-4 transition-transform duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-neutral-300 focus:border-[#3f484f] ${className}`}
                 placeholder={placeholder}
                 initial={{ scale: 1 }}
                 whileFocus={{ scale: 1.02 }}
@@ -23,13 +23,13 @@ export default function InputField({ label, onChange, type = "text", placeholder
     );
 }
 
-export function InputFieldForm({ name, rules, label, placeholder, control, type }) {
+export function InputFieldForm({ name, rules, label, placeholder, control, type, className }) {
     return (
         <Controller
             control={control}
             name={name}
             rules={rules}
-            render={({ field }) => <InputField onChange={field.onChange} label={label} value={field.value ?? ""} type={type} placeholder={placeholder} />}
+            render={({ field }) => <InputField onChange={field.onChange} label={label} className={className} value={field.value ?? ""} type={type} placeholder={placeholder} />}
         />
     );
 }

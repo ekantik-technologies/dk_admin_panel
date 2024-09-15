@@ -23,9 +23,9 @@ export default function Index() {
                         key={dept.value}
                         label={dept.label}
                         onClick={() => setActiveDepartment(dept.value)}
-                        // bg={`transition-colors duration-300 ${
-                        //     activeDepartment === dept.value ? "bg-neutral-300" : "bg-neutral-100 border-neutral-300 border text-black hover:border-0 hover:bg-neutral-200"
-                        // }`}
+                        bg={`transition-colors duration-300 ${
+                            activeDepartment === dept.value ? "bg-[#f7ccb0] border-[#3f484f] border" : "bg-[#fff9f5] border-[#3f484f] border text-black hover:bg-[#f7ccb0]"
+                        }`}
                     />
                 ))}
             </div>

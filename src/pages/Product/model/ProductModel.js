@@ -14,7 +14,6 @@ export default function ProductModel(props) {
     const defaultValue = () => ({
         components: selectedProductDetails.components.map((el) => ({ component: { label: el.id.name, value: el.id._id }, quantity: el.quantity })),
         name: selectedProductDetails.name,
-        quantity: selectedProductDetails.quantity,
         stickerNumber: selectedProductDetails.sticker_number,
         plasticBagNumber: selectedProductDetails.plastic_bag_number,
         stickerType: { label: selectedProductDetails.sticker.name, value: { _id: selectedProductDetails.sticker._id, name: selectedProductDetails.sticker.name } },
@@ -69,7 +68,6 @@ export default function ProductModel(props) {
                 box: data.box.map((el) => el.value._id),
                 plastic_bag_number: data.plasticBagNumber,
                 plastic_bag: data.plasticBagType.value._id,
-                quantity: data.quantity,
                 in_a_box: data.productInBox,
                 sticker_number: data.stickerNumber,
                 sticker: data.stickerType.value._id,
@@ -97,7 +95,6 @@ export default function ProductModel(props) {
             box: data.box.map((el) => el.value._id),
             plastic_bag_number: data.plasticBagNumber,
             plastic_bag: data.plasticBagType.value._id,
-            quantity: data.quantity,
             in_a_box: data.productInBox,
             sticker_number: data.stickerNumber,
             sticker: data.stickerType.value._id,
@@ -279,17 +276,31 @@ export default function ProductModel(props) {
                             <Button label="Add Component" onClick={() => append({ component: null, quantity: "" })} />
                         </div>
 
-                        <div>
-                            <label className="font-semibold text-gray-700">Select Color</label>
-                            <Select
-                                placeholder="Select color"
-                                onChange={handleSelectColor}
-                                isMulti
-                                value={watch("color")}
-                                options={colorMenuItem?.filter((option) => !watch("color")?.some((selected) => selected.label === option.label))}
-                                className="react-select-container"
-                                classNamePrefix="react-select"
-                            />
+                        <div className="flex flex-row items-center gap-4">
+                            <div className="w-1/2">
+                                <label className="font-semibold text-gray-700">Select Color</label>
+                                <Select
+                                    placeholder="Select color"
+                                    onChange={handleSelectColor}
+                                    isMulti
+                                    value={watch("color")}
+                                    options={colorMenuItem?.filter((option) => !watch("color")?.some((selected) => selected.label === option.label))}
+                                    className="react-select-container"
+                                    classNamePrefix="react-select"
+                                />
+                            </div>
+
+                            <div className="w-1/2">
+                                <InputFieldForm
+                                    className="h-[38px]"
+                                    type="number"
+                                    label="Enter number of product feet in single box"
+                                    placeholder="Enter number of product feet in single box"
+                                    name="productInBox"
+                                    control={control}
+                                    rules={{ required: "Please enter number of product feet in single box" }}
+                                />
+                            </div>
                         </div>
 
                         <div className="flex flex-row gap-4">
@@ -350,17 +361,6 @@ export default function ProductModel(props) {
                             <div className="w-1/2">
                                 <InputFieldForm
                                     type="number"
-                                    label="Enter Available Quantity"
-                                    placeholder="Enter Available Quantity"
-                                    name="quantity"
-                                    control={control}
-                                    rules={{ required: "Please enter quantity" }}
-                                />
-                                {errors?.quantity && <ErrorMessage className="" errors={errors?.quantity} />}
-                            </div>
-                            <div className="w-1/2">
-                                <InputFieldForm
-                                    type="number"
                                     label="Enter sticker quantity"
                                     placeholder="Enter sticker quantity"
                                     name="stickerNumber"
@@ -369,9 +369,6 @@ export default function ProductModel(props) {
                                 />
                                 {errors?.stickerNumber && <ErrorMessage className="" errors={errors?.stickerNumber} />}
                             </div>
-                        </div>
-
-                        <div className="flex flex-row gap-4">
                             <div className="w-1/2">
                                 <InputFieldForm
                                     type="number"
@@ -383,20 +380,8 @@ export default function ProductModel(props) {
                                 />
                                 {errors?.plasticBagNumber && <ErrorMessage className="" errors={errors?.plasticBagNumber} />}
                             </div>
-
-                            <div className="w-1/2">
-                                <InputFieldForm
-                                    type="number"
-                                    label="Enter number of product feet in single box"
-                                    placeholder="Enter number of product feet in single box"
-                                    name="productInBox"
-                                    control={control}
-                                    rules={{ required: "Please enter number of product feet in single box" }}
-                                />
-                            </div>
                         </div>
                     </div>
-
                     <div className="mt-6">
                         <Button label="Save" onClick={handleSubmit(handleSave)} />
                     </div>

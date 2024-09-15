@@ -6,6 +6,14 @@ import UserTable from "./component/UserTable.js";
 import API from "../../API/API.js";
 import CryptoJS from "crypto-js";
 
+export const decrypt = (cipherText) => {
+    const bytes = CryptoJS.AES.decrypt(cipherText, process.env.REACT_APP_SECRET_KEY);
+
+    const decryptedData = bytes.toString(CryptoJS.enc.Utf8);
+
+    return decryptedData;
+};
+
 export default function Index() {
     const [showPopup, setShowPopup] = useState(null);
     const [users, setUsers] = useState([]);
@@ -32,14 +40,6 @@ export default function Index() {
 
     const handleSelectAll = () => {
         selectedUsers.length !== users.length ? setSelectedUsers(users.map((el) => el._id)) : setSelectedUsers([]);
-    };
-
-    const decrypt = (cipherText) => {
-        const bytes = CryptoJS.AES.decrypt(cipherText, process.env.REACT_APP_SECRET_KEY);
-
-        const decryptedData = bytes.toString(CryptoJS.enc.Utf8);
-
-        return decryptedData;
     };
 
     return (

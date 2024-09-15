@@ -6,7 +6,7 @@ import Button from "../../../components/Button/Button";
 import InputField from "../../../components/InputField";
 
 export default function UpdateQuantity(props) {
-    const { _id, fetchComponentList, quantity_history, department, handleClickEdit } = props;
+    const { _id, fetchComponentList, quantity_history, department, handleClickEdit, linked } = props;
 
     const [mode, setMode] = useState(null);
 
@@ -37,11 +37,11 @@ export default function UpdateQuantity(props) {
 
     return (
         <>
-            <div className="flex flex-row items-center gap-4 max-w-[300px]">
-                <Button label="Add" bg="bg-green-300" onClick={() => setMode("add")} />
-                <Button label="Remove" bg="bg-red-300" onClick={() => setMode("remove")} />
-                <Button label="History" bg="bg-orange-300" onClick={() => setMode("history")} />
-                <Button label="Edit" bg="bg-neutral-300" onClick={() => handleClickEdit()} />
+            <div className="flex flex-row items-center gap-4 max-w-[380px]">
+                <Button className="max-w-[70px]" label="Add" bg="bg-green-300" onClick={() => setMode("add")} />
+                <Button className="max-w-[70px]" label="History" bg="bg-orange-300" onClick={() => setMode("history")} />
+                <Button className="max-w-[70px]" label="Edit" bg="bg-neutral-300" onClick={() => handleClickEdit()} />
+                {!linked && <Button label="Remove" className="max-w-[80px]" bg="bg-red-300" onClick={() => setMode("remove")} />}
             </div>
 
             {!!mode && (

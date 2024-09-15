@@ -17,11 +17,11 @@ export default function DepartmentWiseOrder({ department, order }) {
                         transition={{ type: "spring", stiffness: 200 }}
                     >
                         <div className="flex flex-col gap-2">
-                            <span className="text-lg font-semibold text-gray-800">{el.client_id.name}</span>
+                            <span className="text-lg font-semibold text-gray-800">{el?.client_id?.name}</span>
                             {el.product.map((prodEl, prodIndex) => (
                                 <div key={prodIndex} className="flex justify-between items-center">
-                                    <span className="text-sm font-medium text-gray-600">{prodEl.id.name}</span>
-                                    <span className="text-sm font-semibold text-gray-900">{prodEl.quantity} units</span>
+                                    <span className="text-sm font-medium text-gray-600">{prodEl?.id?.name}</span>
+                                    <span className="text-sm font-semibold text-gray-900">{prodEl?.quantity} units</span>
                                 </div>
                             ))}
                         </div>

@@ -52,7 +52,7 @@ const ProductTable = (props) => {
                     }}
                 >
                     {productList?.length > 0 ? (
-                        productList.map((el, index) => (
+                        productList?.map((el, index) => (
                             <motion.tr
                                 key={index}
                                 variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
@@ -83,27 +83,27 @@ const ProductTable = (props) => {
                                     ))}
                                 </td>
                                 <td className="py-3 px-3 text-gray-800 font-medium text-[12px]">
-                                    {el.sticker.name} ({el.sticker_number})
+                                    {el?.sticker?.name} ({el?.sticker_number})
                                 </td>
                                 <td className="py-3 px-3 text-gray-800 font-medium text-[12px]">
-                                    {el.plastic_bag.name} ({el.plastic_bag_number})
+                                    {el?.plastic_bag?.name} ({el?.plastic_bag_number})
                                 </td>
                                 <td className="py-3 px-2 text-gray-800 font-medium text-[12px]">
-                                    {el.cartoon.map((cartoonEl, index) => (
+                                    {el?.cartoon?.map((cartoonEl, index) => (
                                         <span
                                             key={index}
                                             className="px-2 py-1 m-1 rounded-md border border-yellow-400 bg-yellow-100 text-yellow-900 font-semibold inline-block text-[12px]"
                                         >
-                                            {cartoonEl.name}
+                                            {cartoonEl?.name}
                                         </span>
                                     ))}
                                 </td>
                                 <td className="py-3 px-2 text-gray-800 font-medium text-[12px]">
                                     <div className="">
-                                        {el.components.map((comEl, index) => (
+                                        {el?.components?.map((comEl, index) => (
                                             <div key={index} className="px-2 m-1 w-fit inline-block py-1 border border-gray-300 rounded-md bg-gray-100 text-[12px]">
                                                 <span>
-                                                    {comEl.id.name} ({comEl.quantity})
+                                                    {comEl?.id?.name} ({comEl?.quantity})
                                                 </span>
                                             </div>
                                         ))}
