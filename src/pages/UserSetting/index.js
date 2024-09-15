@@ -39,7 +39,15 @@ export default function Index() {
     }, [currentPage]);
 
     const handleSelectAll = () => {
-        selectedUsers.length !== users.length ? setSelectedUsers(users.map((el) => el._id)) : setSelectedUsers([]);
+        !selectedUsers.length
+            ? setSelectedUsers(
+                  users
+                      .map((el, index) => {
+                          if (index !== 0) return el._id;
+                      })
+                      .filter((el) => !!el)
+              )
+            : setSelectedUsers([]);
     };
 
     return (

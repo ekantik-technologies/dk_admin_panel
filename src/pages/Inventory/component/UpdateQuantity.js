@@ -39,9 +39,9 @@ export default function UpdateQuantity(props) {
         <>
             <div className="flex flex-row items-center gap-4 max-w-[380px]">
                 <Button className="max-w-[70px]" label="Add" bg="bg-green-300" onClick={() => setMode("add")} />
-                <Button className="max-w-[70px]" label="History" bg="bg-orange-300" onClick={() => setMode("history")} />
+                <Button className="max-w-[80px]" label="History" bg="bg-orange-300" onClick={() => setMode("history")} />
                 <Button className="max-w-[70px]" label="Edit" bg="bg-neutral-300" onClick={() => handleClickEdit()} />
-                {!linked && <Button label="Remove" className="max-w-[80px]" bg="bg-red-300" onClick={() => setMode("remove")} />}
+                {!linked && <Button label="Remove" className="max-w-[95px]" bg="bg-red-300" onClick={() => setMode("remove")} />}
             </div>
 
             {!!mode && (

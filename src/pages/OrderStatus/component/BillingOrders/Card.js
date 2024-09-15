@@ -35,8 +35,8 @@ export default function BillingCard(props) {
                     return (
                         <div key={index} className="space-y-2 my-4">
                             <div className="flex flex-row justify-between mb-2">
-                                <h1 className="text-lg font-bold">{el.id.name}</h1>
-                                <span className="text-lg font-bold">{el.quantity}</span>
+                                <h1 className="text-lg font-bold">{el?.id?.name}</h1>
+                                <span className="text-lg font-bold">{el?.quantity}</span>
                             </div>
                         </div>
                     );

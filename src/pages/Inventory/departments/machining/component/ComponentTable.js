@@ -49,9 +49,9 @@ const ComponentTable = (props) => {
             >
                 <thead>
                     <tr className="bg-gradient-to-r from-[#3f484f] to-[#5b636b] text-white">
-                        {/* <th className="py-2 px-4 text-left w-[5%]">
-                            <CheckBox setIsChecked={(checked) => handleSelectAll(checked)} isChecked={selectedComponent.length === componentList?.length} />
-                        </th> */}
+                        <th className="py-2 px-4 text-left w-[5%]">
+                            {/* <CheckBox setIsChecked={(checked) => handleSelectAll(checked)} isChecked={selectedComponent.length === componentList?.length} /> */}
+                        </th>
                         <th className="py-2 px-4 text-left">Name</th>
                         <th className="py-2 px-4 text-left">Quantity</th>
                         <th className="py-2 px-4 text-left">Min. Quantity</th>

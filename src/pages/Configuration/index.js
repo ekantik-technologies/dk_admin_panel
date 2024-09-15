@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { InputFieldForm } from "../../components/InputField";
 import { useForm } from "react-hook-form";
 import Button from "../../components/Button/Button";
@@ -6,6 +6,7 @@ import API from "../../API/API";
 
 export default function Index() {
     const { control, setValue, watch } = useForm();
+    const [editableIndex, setEditableIndex] = useState(null); // Track which input is editable
 
     const fetchColor = async () => {
         try {
@@ -36,6 +37,7 @@ export default function Index() {
             const response = await API.put(`/admin/color/${id}`, { name });
             if (response.success) {
                 fetchColor();
+                setEditableIndex(null); // Disable editing after saving
             }
         } catch (error) {
             console.log(`error ==>`, error);
@@ -61,14 +63,31 @@ export default function Index() {
 
                 <div className="flex flex-col gap-4">
                     {watch("color")?.map((el, index) => {
+                        const isEditable = editableIndex === index;
+
                         return (
                             <div key={index} className="flex flex-row gap-4">
-                                <InputFieldForm control={control} name={`color.${index}.name`} placeholder="Enter color" />
+                                <InputFieldForm
+                                    control={control}
+                                    name={`color.${index}.name`}
+                                    placeholder="Enter color"
+                                    disabled={!isEditable}
+                                    className={isEditable ? "border-2 border-blue-500" : ""}
+                                />
 
-                                <div className="flex flex-row gap-2">
-                                    <Button className="max-h-[42px]" label="Edit" onClick={() => editColor(el._id, watch(`color.${index}.name`))} />
-                                    <Button className="max-h-[42px]" label="Delete" onClick={() => deleteColor(el._id)} />
-                                </div>
+                                {isEditable ? (
+                                    <Button
+                                        bg="bg-green-200 border border-green-600"
+                                        className="max-h-[42px]"
+                                        label="Save"
+                                        onClick={() => editColor(el._id, watch(`color.${index}.name`))}
+                                    />
+                                ) : (
+                                    <div className="flex flex-row gap-2">
+                                        <Button className="max-h-[42px]" label="Edit" onClick={() => setEditableIndex(index)} />
+                                        <Button className="max-h-[42px]" label="Delete" onClick={() => deleteColor(el._id)} />
+                                    </div>
+                                )}
                             </div>
                         );
                     })}

@@ -4,6 +4,7 @@ import { hideLoader, showLoader } from "../store/slice/loaderSlice";
 import { store } from "../store/store";
 
 let API = axios.create({
+    // baseURL: "http://192.168.43.147:5000/api",
     baseURL: process.env.REACT_APP_API_URL,
     responseType: "json",
 });

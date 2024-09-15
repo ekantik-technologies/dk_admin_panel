@@ -35,7 +35,7 @@ const UserTable = (props) => {
                 <thead>
                     <tr className="bg-gradient-to-r from-[#3f484f] uppercase to-[#5b636b] text-white">
                         <th className="py-2 px-3 w-[2%] text-left font-semibold uppercase tracking-wide text-[12px]">
-                            <CheckBox setIsChecked={() => handleSelectAll()} paddingL="pl-3" isChecked={selectedUsers.length === users?.length} />
+                            {/* <CheckBox setIsChecked={() => handleSelectAll()} paddingL="pl-3" isChecked={selectedUsers.length === users?.length} /> */}
                         </th>
                         <th className="py-2 px-4 text-left">User Name</th>
                         <th className="py-2 px-4 text-left">Password</th>
@@ -55,7 +55,11 @@ const UserTable = (props) => {
                             >
                                 <td className="py-2 px-4 text-gray-800">
                                     <div className="flex flex-row items-center gap-2">
-                                        <CheckBox setIsChecked={(isChecked) => handleSelection(isChecked, user._id)} isChecked={selectedUsers.includes(user._id)} />
+                                        <CheckBox
+                                            disabled={index === 0}
+                                            setIsChecked={(isChecked) => handleSelection(isChecked, user._id)}
+                                            isChecked={selectedUsers.includes(user._id)}
+                                        />
                                     </div>
                                 </td>
 
