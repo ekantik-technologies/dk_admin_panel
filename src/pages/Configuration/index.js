@@ -23,7 +23,7 @@ export default function Index() {
 
     const deleteColor = async (id) => {
         try {
-            const response = await API.delete("/admin/color", { data: id });
+            const response = await API.delete(`/admin/color/${id}`);
             if (response.success) {
                 fetchColor();
             }

@@ -9,6 +9,7 @@ import { ReactComponent as SettingIcon } from "../../Assets/settings.svg";
 import { ReactComponent as POSIcon } from "../../Assets/pos.svg";
 import { ReactComponent as MenuIcon } from "../../Assets/menu.svg";
 import { ReactComponent as ScheduleIcon } from "../../Assets/schedule.svg";
+import { ReactComponent as OrderIcon } from "../../Assets/order.svg";
 import dkLogo from "../../Assets/dkLogo.png";
 
 const sidebarVariants = {
@@ -48,6 +49,7 @@ const Sidebar = () => {
                         { to: "/rejected-order", icon: RejectedOrderIcon, label: "Rejected Order" },
                         { to: "/user-setting", icon: UserIcon, label: "User Setting" },
                         { to: "/client", icon: ClientIcon, label: "Client" },
+                        { to: "/client-orders", icon: OrderIcon, label: "Client Order" },
                         { to: "/configuration", icon: SettingIcon, label: "Configuration" },
                         { to: "/inventory", icon: POSIcon, label: "Inventory" },
                         { to: "/product", icon: MenuIcon, label: "Product" },

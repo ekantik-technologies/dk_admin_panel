@@ -11,6 +11,7 @@ import Product from "./pages/Product";
 import Loader from "./components/Loader/Loader";
 import OrderStatus from "./pages/OrderStatus";
 import RejectedOrder from "./pages/RejectedOrder/RejectedOrder";
+import ClientOrder from "./pages/ClientOrder/ClientOrder";
 import { useEffect } from "react";
 import { setupNotifications } from "./firebase";
 
@@ -58,6 +59,15 @@ function App() {
                                             element={
                                                 <PrivateRoute>
                                                     <Client />
+                                                </PrivateRoute>
+                                            }
+                                        />
+
+                                        <Route
+                                            path="/client-orders"
+                                            element={
+                                                <PrivateRoute>
+                                                    <ClientOrder />
                                                 </PrivateRoute>
                                             }
                                         />

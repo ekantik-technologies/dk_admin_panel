@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { ReactComponent as CloseIcon } from "../../../Assets/close.svg";
-import { format } from "date-fns";
 import API from "../../../API/API";
 import Button from "../../../components/Button/Button";
 import InputField from "../../../components/InputField";
 
 export default function UpdateQuantity(props) {
-    const { _id, fetchComponentList, quantity_history, department, handleClickEdit, linked } = props;
+    const { _id, fetchComponentList, department, handleClickEdit, linked } = props;
 
     const [mode, setMode] = useState(null);
 
@@ -39,7 +38,6 @@ export default function UpdateQuantity(props) {
         <>
             <div className="flex flex-row items-center gap-4 max-w-[380px]">
                 <Button className="max-w-[70px]" label="Add" bg="bg-green-300" onClick={() => setMode("add")} />
-                <Button className="max-w-[80px]" label="History" bg="bg-orange-300" onClick={() => setMode("history")} />
                 <Button className="max-w-[70px]" label="Edit" bg="bg-neutral-300" onClick={() => handleClickEdit()} />
                 {!linked && <Button label="Remove" className="max-w-[95px]" bg="bg-red-300" onClick={() => setMode("remove")} />}
             </div>
@@ -57,24 +55,9 @@ export default function UpdateQuantity(props) {
                             </div>
                         </div>
 
-                        {mode !== "history" ? (
-                            <>
-                                <InputField value={quantity} label={mode.toUpperCase()} onChange={(e) => setQuantity(e.target.value)} />
+                        <InputField value={quantity} label={mode.toUpperCase()} onChange={(e) => setQuantity(e.target.value)} />
 
-                                <Button className="mt-6" label="Save" onClick={handleClickSave} />
-                            </>
-                        ) : (
-                            <>
-                                {quantity_history.map((el, index) => (
-                                    <div className="flex flex-row gap-2 my-3 items-center" key={index}>
-                                        <span className="font-extrabold text-2xl pr-2">{`>`}</span>
-                                        <span>{el.quantity_change > 0 ? "Added" : "Removed"}</span>
-                                        <span className="font-bold mx-3">{Math.abs(el.quantity_change)}</span>
-                                        <span>{format(new Date(el.date), "MMMM d, yyyy h:mm a")}</span>
-                                    </div>
-                                ))}
-                            </>
-                        )}
+                        <Button className="mt-6" label="Save" onClick={handleClickSave} />
                     </div>
                 </div>
             )}

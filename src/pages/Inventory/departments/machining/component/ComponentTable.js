@@ -22,23 +22,6 @@ const ComponentTable = (props) => {
         selectedComponent.includes(id) ? setSelectedComponent((prevState) => prevState.filter((el) => el !== id)) : setSelectedComponent((prevState) => [...prevState, id]);
     };
 
-    const handleSelectAll = (checked) => {
-        // componentList.forEach((el) => {
-        //     if (!el.linked) setSelectedComponent((prevState) => [...prevState, el._id]);
-        // });
-
-        checked
-            ? setSelectedComponent(
-                  componentList
-                      .map((el) => {
-                          if (!el.linked) return el._id;
-                          return null;
-                      })
-                      .filter((el) => !!el)
-              )
-            : setSelectedComponent([]);
-    };
-
     return (
         <div className="">
             <motion.table
