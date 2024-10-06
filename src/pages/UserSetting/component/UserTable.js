@@ -1,9 +1,9 @@
 import React from "react";
-import { format } from "date-fns";
 import { CheckBox } from "../../../components/CheckBox/CheckBox";
 import { ReactComponent as EditIcon } from "../../../Assets/edit.svg";
 import { EDIT_USER } from "../../../constants/modelConstant";
 import { motion } from "framer-motion";
+import { roleMenuItem } from "../../../constants/constant";
 
 const UserTable = (props) => {
     const { totalPages, users, setCurrentPage, currentPage, selectedUsers, setSelectedUsers, setShowPopup, setSelectedUserDetails, decrypt } = props;
@@ -14,14 +14,6 @@ const UserTable = (props) => {
                   return prevState.filter((el) => el !== id);
               })
             : setSelectedUsers((prevState) => [...prevState, id]);
-    };
-
-    const handleSelectAll = () => {
-        if (selectedUsers.length === users?.length) {
-            setSelectedUsers([]);
-        } else {
-            setSelectedUsers(users.map((el) => el._id));
-        }
     };
 
     return (
@@ -47,50 +39,64 @@ const UserTable = (props) => {
                 </thead>
                 <motion.tbody>
                     {users.length > 0 ? (
-                        users.map((user, index) => (
-                            <motion.tr
-                                key={index}
-                                variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
-                                className={`${index % 2 === 0 ? "bg-[#fff9f5]" : "bg-[#fff2eb]"}`}
-                            >
-                                <td className="py-2 px-4 text-gray-800">
-                                    <div className="flex flex-row items-center gap-2">
-                                        <CheckBox
-                                            disabled={index === 0}
-                                            setIsChecked={(isChecked) => handleSelection(isChecked, user._id)}
-                                            isChecked={selectedUsers.includes(user._id)}
-                                        />
-                                    </div>
-                                </td>
-
-                                <td className="py-2 px-4 text-gray-800">{user.user_name}</td>
-                                <td className="py-2 px-4 text-gray-800">{decrypt(user.password)}</td>
-                                <td className="py-2 px-4 text-gray-800">
-                                    {user.roles.map((role, i) => (
-                                        <div
-                                            key={i}
-                                            className="px-2 py-1 m-1 capitalize rounded-md bg-[#edeff0] text-[#3f484f] border border-neutral-400 font-semibold inline-block"
-                                        >
-                                            {role.role} ({role.permissions.read ? "Read" : ""} {role.permissions.write ? "Write" : ""} {role.permissions.delete ? "Delete" : ""})
+                        users.map((user, index) => {
+                            // if (index != 0) return null;
+                            return (
+                                <motion.tr
+                                    key={index}
+                                    variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+                                    className={`${index % 2 === 0 ? "bg-[#fff9f5]" : "bg-[#fff2eb]"}`}
+                                >
+                                    <td className="py-2 px-4 text-gray-800">
+                                        <div className="flex flex-row items-center gap-2">
+                                            <CheckBox
+                                                disabled={index === 0}
+                                                setIsChecked={(isChecked) => handleSelection(isChecked, user._id)}
+                                                isChecked={selectedUsers.includes(user._id)}
+                                            />
                                         </div>
-                                    ))}
-                                </td>
-                                <td className="py-2 px-4 text-gray-800">{user.mobile_number}</td>
-                                {/* <td className="py-2 px-4 text-gray-800">{format(new Date(user.created_at), "MMMM d, yyyy h:mm a")}</td> */}
-                                <td className="py-2 px-4">
-                                    <div
-                                        className="cursor-pointer w-fit group bg-green-200 hover:bg-green-400 p-1 rounded-lg"
-                                        onClick={() => {
-                                            setShowPopup(EDIT_USER);
+                                    </td>
 
-                                            setSelectedUserDetails(user);
-                                        }}
-                                    >
-                                        <EditIcon className="w-5 h-5 group-hover:stroke-white" stroke="#0a730a" />
-                                    </div>
-                                </td>
-                            </motion.tr>
-                        ))
+                                    <td className="py-2 px-4 text-gray-800">{user.user_name}</td>
+
+                                    <td className="py-2 px-4 text-gray-800">{decrypt(user.password)}</td>
+
+                                    <td className="py-2 px-4 text-gray-800">
+                                        {user.roles.map((role, i) => {
+                                            const roleKey = Object.keys(role.role)[0];
+
+                                            const roleValue = role.role[roleKey];
+
+                                            const matchedRole = roleMenuItem.find((item) => item.value[roleKey] === roleValue);
+
+                                            return (
+                                                <div
+                                                    key={i}
+                                                    className="px-2 py-1 m-1 capitalize rounded-md bg-[#edeff0] text-[#3f484f] border border-neutral-400 font-semibold inline-block"
+                                                >
+                                                    {matchedRole?.label || "Unknown Role"}
+                                                </div>
+                                            );
+                                        })}
+                                    </td>
+
+                                    <td className="py-2 px-4 text-gray-800">{user.mobile_number}</td>
+
+                                    <td className="py-2 px-4">
+                                        <div
+                                            className="cursor-pointer w-fit group bg-green-200 hover:bg-green-400 p-1 rounded-lg"
+                                            onClick={() => {
+                                                setShowPopup(EDIT_USER);
+
+                                                setSelectedUserDetails(user);
+                                            }}
+                                        >
+                                            <EditIcon className="w-5 h-5 group-hover:stroke-white" stroke="#0a730a" />
+                                        </div>
+                                    </td>
+                                </motion.tr>
+                            );
+                        })
                     ) : (
                         <tr className="bg-[#fff2eb]">
                             <td colSpan="6" className="py-4 text-center bg">

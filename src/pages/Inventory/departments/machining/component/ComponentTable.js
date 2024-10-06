@@ -56,7 +56,7 @@ const ComponentTable = (props) => {
                             <motion.tr
                                 key={index}
                                 variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
-                                className={`${index % 2 === 0 ? "bg-[#fff9f5]" : "bg-[#fff2eb]"}`}
+                                className={`${el.quantity < el.minimum_quantity ? "bg-red-300" : index % 2 === 0 ? "bg-[#fff9f5]" : "bg-[#fff2eb]"}`}
                             >
                                 <td className="py-2 px-4 text-gray-800">
                                     <div className="flex flex-row items-center gap-2">

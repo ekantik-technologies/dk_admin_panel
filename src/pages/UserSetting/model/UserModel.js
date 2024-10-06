@@ -5,7 +5,6 @@ import { ReactComponent as CloseIcon } from "../../../Assets/close.svg";
 import { ErrorMessage } from "../../../components/Error/ErrorMessage";
 import Dropdown from "../../../components/Dropdown/Dropdown";
 import Button from "../../../components/Button/Button";
-import { CheckBox } from "../../../components/CheckBox/CheckBox";
 import API from "../../../API/API";
 import CryptoJS from "crypto-js";
 import { roleMenuItem } from "../../../constants/constant";
@@ -14,14 +13,14 @@ export default function UserModel(props) {
     const { handleClickClose, fetchUsers, userData, decrypt } = props;
 
     function formatRole(userDataRoles) {
-        return userDataRoles.reduce((acc, curr) => {
-            acc[curr.role] = {
-                read: curr.permissions.read,
-                write: curr.permissions.write,
-                delete: curr.permissions.delete,
-            };
-            return acc;
-        }, {});
+        return userDataRoles
+            .map((userRoleData) => {
+                const roleKey = Object.keys(userRoleData.role)[0];
+                const roleValue = userRoleData.role[roleKey];
+                const matchedRole = roleMenuItem.find((item) => item.value[roleKey] === roleValue);
+                return matchedRole ? matchedRole : null;
+            })
+            .filter(Boolean);
     }
 
     const {
@@ -37,13 +36,7 @@ export default function UserModel(props) {
                   userName: userData.user_name,
                   mobileNumber: userData.mobile_number,
                   password: decrypt(userData.password),
-                  selectedRole: userData.roles
-                      .map((userRole) => {
-                          const roleItem = roleMenuItem.find((item) => item.value === userRole.role);
-                          return roleItem ? { label: roleItem.label, value: roleItem.value } : null;
-                      })
-                      .filter((item) => item !== null),
-                  roles: formatRole(userData.roles),
+                  selectedRole: formatRole(userData.roles),
               }
             : {},
     });
@@ -53,18 +46,7 @@ export default function UserModel(props) {
     };
 
     const createUser = async (data) => {
-        const userRoles = watch("selectedRole")?.map((role) => {
-            const permissions = watch(`roles.${role.value}`) || {};
-
-            return {
-                role: role.value,
-                permissions: {
-                    read: permissions.read || false,
-                    write: permissions.write || false,
-                    delete: permissions.delete || false,
-                },
-            };
-        });
+        const userRoles = watch("selectedRole")?.map((role) => ({ role: role.value }));
 
         const encryptedPassword = CryptoJS.AES.encrypt(data.password, process.env.REACT_APP_SECRET_KEY).toString();
 
@@ -90,18 +72,7 @@ export default function UserModel(props) {
     };
 
     const updateUser = async (data) => {
-        const userRoles = watch("selectedRole")?.map((role) => {
-            const permissions = watch(`roles.${role.value}`) || {};
-
-            return {
-                role: role.value,
-                permissions: {
-                    read: permissions.read || false,
-                    write: permissions.write || false,
-                    delete: permissions.delete || false,
-                },
-            };
-        });
+        const userRoles = watch("selectedRole")?.map((role) => ({ role: role.value }));
 
         const encryptedPassword = CryptoJS.AES.encrypt(data.password, process.env.REACT_APP_SECRET_KEY).toString();
 
@@ -130,10 +101,6 @@ export default function UserModel(props) {
         setValue("selectedRole", data);
     };
 
-    const setIsChecked = (role, permissionType, isChecked) => {
-        setValue(`roles.${role}.${permissionType}`, isChecked, { shouldValidate: true, shouldDirty: true });
-    };
-
     return (
         <>
             <div className="fixed bg-black bg-opacity-50 inset-0 z-50 flex p-4 md:p-0 md:absolute md:z-[9] overflow-auto md:overflow-visible">
@@ -148,7 +115,7 @@ export default function UserModel(props) {
                         </div>
                     </div>
 
-                    <div className="flex flex-row items-center mb-8 lg:block md:mb-2">
+                    <div className="flex flex-row items-center mb-4 lg:block md:mb-2">
                         <div className="w-1/2 mr-2 lg:w-full lg:mr-0 lg:mb-2 md:mb-4 relative">
                             <InputFieldForm
                                 label="Enter user name"
@@ -194,36 +161,15 @@ export default function UserModel(props) {
                         </div>
                     </div>
 
-                    {watch("selectedRole")?.map((el, index) => {
-                        return (
-                            <div key={index} className="flex flex-row w-full justify-between mb-2">
-                                <span className="text-lg text-neutral-700">{el.label} : </span>
-                                <div className="flex flex-row items-center gap-4 ml-8">
-                                    <CheckBox
-                                        isChecked={watch(`roles.${el.value}.read`) ?? false}
-                                        setIsChecked={(checked) => setIsChecked(el.value, "read", checked)}
-                                        label="Read"
-                                        paddingL="pl-2"
-                                        optionId={`read${index}`}
-                                    />
-                                    <CheckBox
-                                        isChecked={watch(`roles.${el.value}.write`) ?? false}
-                                        setIsChecked={(checked) => setIsChecked(el.value, "write", checked)}
-                                        label="Write"
-                                        paddingL="pl-2"
-                                        optionId={`write${index}`}
-                                    />
-                                    <CheckBox
-                                        isChecked={watch(`roles.${el.value}.delete`) ?? false}
-                                        setIsChecked={(checked) => setIsChecked(el.value, "delete", checked)}
-                                        label="Delete"
-                                        paddingL="pl-2"
-                                        optionId={`delete${index}`}
-                                    />
+                    <div className="flex flex-wrap gap-x-4 my-6">
+                        {watch("selectedRole")?.map((el, index) => {
+                            return (
+                                <div key={index} className="w-fit mb-2 bg-[#d5dcdf] px-3 py-1 rounded-xl">
+                                    <span className="text-lg text-neutral-700">{el.label}</span>
                                 </div>
-                            </div>
-                        );
-                    })}
+                            );
+                        })}
+                    </div>
 
                     <div className="flex flex-row justify-between items-center md:fixed md:bottom-0 md:left-0 md:right-0 md:mb-0 md:shadow-dropShadow md:bg-white md:px-4 md:pt-2 md:pb-1">
                         <Button label="Save" onClick={handleSubmit(handleUserAction)} />

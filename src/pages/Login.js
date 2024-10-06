@@ -18,10 +18,10 @@ const Login = () => {
     const navigate = useNavigate();
 
     const handleLogin = async (data) => {
-        const encryptedPassword = CryptoJS.AES.encrypt(data.password, process.env.REACT_APP_SECRET_KEY).toString();
-        const encryptedUserName = CryptoJS.AES.encrypt(data.userName, process.env.REACT_APP_SECRET_KEY).toString();
+        // const encryptedPassword = CryptoJS.AES.encrypt(data.password, process.env.REACT_APP_SECRET_KEY).toString();
+        // const encryptedUserName = CryptoJS.AES.encrypt(data.userName, process.env.REACT_APP_SECRET_KEY).toString();
 
-        const body = { user_name: encryptedUserName, password: encryptedPassword, firebase_notification_token: localStorage.getItem("firebaseToken") };
+        const body = { user_name: data.userName, password: data.password, firebase_notification_token: localStorage.getItem("firebaseToken") };
 
         try {
             const response = await API.post("/auth/login", body);
